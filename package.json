@@ -1,0 +1,23 @@
+{
+    "name": "gherlint",
+    "version": "0.0.1",
+    "description": "A pattern checker for Gherkin language.",
+    "author": "Sajan Gurung <me.sawjan@gmail.com>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gherlint/gherlint.git"
+    },
+    "bugs": {
+        "url": "https://github.com/gherlint/gherlint.git/issues"
+    },
+    "keywords": [
+        "lint",
+        "gherkin",
+        "cucumber",
+        "bdd"
+    ],
+    "engines": {
+        "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
+    }
+}
