@@ -2,6 +2,10 @@
     "name": "gherlint",
     "version": "0.0.1",
     "description": "A pattern checker for Gherkin language.",
+    "bin": {
+        "gherlint": "./bin/gherlint.js"
+    },
+    "main": "./lib/index.js",
     "author": "Sajan Gurung <me.sawjan@gmail.com>",
     "license": "MIT",
     "repository": {
