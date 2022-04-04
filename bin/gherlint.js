@@ -2,5 +2,5 @@
 
 // main function
 (function main() {
-    process.exitCode = require("../lib/cli").execute(process.argv);
-})();
+    return require("../lib/cli").execute(process.argv);
+})().catch((err) => console.error(err));
