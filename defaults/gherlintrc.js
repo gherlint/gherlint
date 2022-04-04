@@ -1,6 +1,4 @@
 module.exports = {
-    // path to feature files: files, dirs or glob
-    featureFiles: [],
     formatRules: {
         indentStyle: "space",
         indentSize: 4,
