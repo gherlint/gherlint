@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
 // main function
-(function main() {
-    process.exitCode = require("../lib/cli").execute(process.argv);
-})();
+(async function main() {
+    process.exitCode = await require("../lib/cli").execute(process.argv);
+})().catch((err) => {
+    process.exitCode = 2;
+    console.error(err);
+});
