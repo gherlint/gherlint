@@ -24,11 +24,17 @@
     "engines": {
         "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
     },
+    "scripts": {
+        "lint": "eslint './**/*.js'"
+    },
     "dependencies": {
         "commander": "^9.1.0",
         "gherkin": "^9.0.0",
         "glob": "^7.2.0",
         "lodash": "^4.17.21",
         "minimatch": "^5.0.1"
+    },
+    "devDependencies": {
+        "eslint": "^8.13.0"
     }
 }
