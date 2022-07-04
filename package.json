@@ -2,9 +2,7 @@
     "name": "gherlint",
     "version": "0.0.1",
     "description": "A pattern checker for Gherkin language.",
-    "bin": {
-        "gherlint": "./bin/gherlint.js"
-    },
+    "bin": "./bin/gherlint.js",
     "main": "./lib/index.js",
     "author": "Sajan Gurung <me.sawjan@gmail.com>",
     "license": "MIT",
@@ -24,8 +22,12 @@
     "engines": {
         "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
     },
+    "packageManager": "yarn@3.2.1",
     "scripts": {
-        "lint": "eslint './**/*.js'"
+        "lint": "eslint './**/*.js'",
+        "postinstall": "husky install",
+        "prepack": "pinst --disable",
+        "postpack": "pinst --enable"
     },
     "dependencies": {
         "commander": "^9.1.0",
@@ -36,6 +38,8 @@
         "terminal-kit": "^2.4.0"
     },
     "devDependencies": {
-        "eslint": "^8.13.0"
+        "eslint": "^8.13.0",
+        "husky": "^8.0.1",
+        "pinst": "^3.0.0"
     }
 }
