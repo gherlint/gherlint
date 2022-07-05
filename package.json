@@ -33,7 +33,6 @@
         "@cucumber/gherkin": "^24.0.0",
         "@cucumber/messages": "^19.1.2",
         "commander": "^9.1.0",
-        "gherkin": "^9.0.0",
         "glob": "^7.2.0",
         "lodash": "^4.17.21",
         "minimatch": "^5.0.1",
