@@ -2,8 +2,9 @@
 
 // main function
 (async function main() {
-    process.exitCode = await require("../lib/cli").execute(process.argv);
+    const exitCode = await require("../lib/Cli").execute(process.argv);
+    process.exit(exitCode);
 })().catch((err) => {
-    process.exitCode = 2;
     console.error(err);
+    process.exit(2);
 });
