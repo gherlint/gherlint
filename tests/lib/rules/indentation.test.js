@@ -13,40 +13,31 @@ const config = {
 };
 
 describe("Indentation rule", () => {
-    describe("main function: run()", () => {
-        describe("empty ast", () => {
-            it("empty args: should return undefined", () => {
-                const rule = Indentation.run();
-                console.log(rule);
-                expect(rule.getProblems()).toEqual([]);
-            });
-            it("empty ast object: should return undefined", () => {
-                const rule = Indentation.run({});
-                expect(rule.getProblems()).toEqual([]);
-            });
+    describe("empty ast", () => {
+        it("empty args: should return undefined", () => {
+            const rule = Indentation.run();
+            expect(rule.getProblems()).toEqual([]);
+        });
+        it("empty ast object: should return undefined", () => {
+            const rule = Indentation.run({});
+            expect(rule.getProblems()).toEqual([]);
         });
     });
-    describe("Indentation class", () => {
-        describe("without fix option", () => {
-            const testData = getTestData(config);
+    describe("without fix option", () => {
+        const testData = getTestData(config);
 
-            it.each(testData)(
-                "check indent: %s",
-                (_, text, expectedProblems) => {
-                    const ast = parser.parse(text);
-                    const rule = Indentation.run(ast, config);
-                    const problems = rule.getProblems();
+        it.each(testData)("check indent: %s", (_, text, expectedProblems) => {
+            const ast = parser.parse(text);
+            const rule = Indentation.run(ast, config);
+            const problems = rule.getProblems();
 
-                    expect(problems.length).toEqual(expectedProblems.length);
-                    expect(new Set(problems)).toEqual(
-                        new Set(expectedProblems)
-                    );
-                }
-            );
+            expect(problems.length).toEqual(expectedProblems.length);
+            expect(new Set(problems)).toEqual(new Set(expectedProblems));
+        });
 
-            describe("Expected to fail", () => {
-                it.failing("Rule tags: yet to implement", () => {
-                    const text = `Feature: a feature file
+        describe("Expected to fail", () => {
+            it.failing("Rule tags: yet to implement", () => {
+                const text = `Feature: a feature file
 @tag1
     Rule: a rule
   @tag2
@@ -54,38 +45,85 @@ describe("Indentation rule", () => {
         @tag2
     Rule: a rule`;
 
-                    const expectedProblems = [
-                        // no indentconfig
-                        generateProblem({ line: 4, column: 3 }, 4, 2, config),
-                        // more indent
-                        generateProblem({ line: 6, column: 9 }, 4, 8, config),
-                    ];
+                const expectedProblems = [
+                    // no indent
+                    generateProblem({ line: 2, column: 1 }, 4, 0, config),
+                    // less indent
+                    generateProblem({ line: 4, column: 3 }, 4, 2, config),
+                    // more indent
+                    generateProblem({ line: 6, column: 9 }, 4, 8, config),
+                ];
 
-                    const ast = parser.parse(text);
-                    const rule = Indentation.run(ast, config);
-                    const problems = rule.getProblems();
+                const ast = parser.parse(text);
+                const rule = Indentation.run(ast, config);
+                const problems = rule.getProblems();
 
-                    expect(problems.length).toEqual(expectedProblems.length);
-                    expect(new Set(problems)).toEqual(
-                        new Set(expectedProblems)
-                    );
-                });
+                expect(problems.length).toEqual(expectedProblems.length);
+                expect(new Set(problems)).toEqual(new Set(expectedProblems));
+            });
+        });
+    });
+
+    describe("with fix option", () => {
+        const configWithFix = {
+            ...config,
+            cliOptions: { fix: true },
+        };
+        const testData = getTestData(configWithFix);
+
+        it.each(testData)("check fix: %s", (_, text, expectedProblems) => {
+            const ast = parser.parse(text);
+
+            const rule = Indentation.run(ast, configWithFix);
+            const problems = rule.getProblems();
+
+            problems.forEach((problem, index) => {
+                expect(problem.fixData).toMatchObject(
+                    expectedProblems[index].fixData
+                );
             });
         });
 
-        describe("with fix option", () => {
-            const configWithFix = {
-                ...config,
-                cliOptions: { fix: true },
-            };
-            const testData = getTestData(configWithFix);
+        describe("Expected to fail", () => {
+            it.failing("Rule tags: yet to implement", () => {
+                const text = `Feature: a feature file
+@tag1
+    Rule: a rule
+  @tag2
+    Rule: a rule
+        @tag2
+    Rule: a rule`;
 
-            it.each(testData)("check fix: %s", (_, text, expectedProblems) => {
+                const expectedProblems = [
+                    // no indent
+                    generateProblem(
+                        { line: 2, column: 1 },
+                        4,
+                        0,
+                        configWithFix
+                    ),
+                    // less indent
+                    generateProblem(
+                        { line: 4, column: 3 },
+                        4,
+                        2,
+                        configWithFix
+                    ),
+                    // more indent
+                    generateProblem(
+                        { line: 6, column: 9 },
+                        4,
+                        8,
+                        configWithFix
+                    ),
+                ];
+
                 const ast = parser.parse(text);
-
                 const rule = Indentation.run(ast, configWithFix);
                 const problems = rule.getProblems();
 
+                expect(problems.length).toEqual(expectedProblems.length);
+                // ToDo: after implementing fix, remove above line
                 problems.forEach((problem, index) => {
                     expect(problem.fixData).toMatchObject(
                         expectedProblems[index].fixData
