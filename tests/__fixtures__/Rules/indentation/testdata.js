@@ -32,6 +32,7 @@ As a user
 I want
 So that
     @tag1
+    @tag2
     Rule: a rule
         Background: a background
             Given a step
@@ -55,6 +56,7 @@ As a user
 I want
 So that
     @tag1
+    @tag2
     Rule: a rule
         Background: a background
             Given a step
@@ -75,13 +77,14 @@ So that
         [
             "valid indentation",
             `@tag1
+@tag2
 Feature: a feature file
 As a user
 I want
 So that
     Background: a background
         Given a step
-    @tag2
+    @tag2 @tag1
     Scenario: a scenario
         When a step
         Then a step
@@ -433,6 +436,19 @@ Examples:
             | col1  |
             | data1 |
             | data1 |`,
+        ],
+        [
+            "invalid multiline tags",
+            `      @tag1
+ @tag1
+Feature: a feature`,
+            [
+                generateProblem({ line: 1, column: 7 }, 0, 6, config),
+                generateProblem({ line: 2, column: 2 }, 0, 1, config),
+            ],
+            `@tag1
+@tag1
+Feature: a feature`,
         ],
     ];
 }
