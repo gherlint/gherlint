@@ -1,5 +1,6 @@
 const {
     getTestData,
+    generateProblem,
 } = require("../../__fixtures__/Rules/indentation/testdata");
 const Indentation = require("../../../lib/rules/indentation");
 const parser = require("../helpers/parser");
@@ -54,6 +55,29 @@ describe("Indentation rule", () => {
                     expectedProblems[index].fixData
                 );
             });
+        });
+    });
+
+    describe("method: fixSingleLine", () => {
+        const configWithFix = {
+            ...config,
+            cliOptions: { fix: true },
+        };
+
+        it.only("fix text", () => {
+            const text = " @tag1\nFeature: signup";
+            const problem = generateProblem(
+                { line: 1, column: 2 },
+                0,
+                1,
+                configWithFix
+            );
+            problem.fixData = { indent: "" };
+
+            const rule = new Indentation();
+            const fixedText = rule.fixSingleLine(text, problem);
+
+            expect(fixedText).toEqual("@tag1\nFeature: signup");
         });
     });
 });
