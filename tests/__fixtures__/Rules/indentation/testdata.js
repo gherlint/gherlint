@@ -155,6 +155,31 @@ Rule: a rule
     Rule: a rule`,
         ],
         [
+            "invalid Rule tag indentation",
+            `Feature: a feature file
+@tag1
+    Rule: a rule
+  @tag2
+    Rule: a rule
+        @tag2
+    Rule: a rule`,
+            [
+                // no indent
+                generateProblem({ line: 2, column: 1 }, 4, 0, config),
+                // less indent
+                generateProblem({ line: 4, column: 3 }, 4, 2, config),
+                // more indent
+                generateProblem({ line: 6, column: 9 }, 4, 8, config),
+            ],
+            `Feature: a feature file
+    @tag1
+    Rule: a rule
+    @tag2
+    Rule: a rule
+    @tag2
+    Rule: a rule`,
+        ],
+        [
             "invalid Background indentation (no indent)",
             `Feature: a feature file
 Background: a background`,

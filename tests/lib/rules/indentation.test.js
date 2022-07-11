@@ -1,6 +1,5 @@
 const {
     getTestData,
-    generateProblem,
 } = require("../../__fixtures__/Rules/indentation/testdata");
 const Indentation = require("../../../lib/rules/indentation");
 const parser = require("../helpers/parser");
@@ -34,34 +33,6 @@ describe("Indentation rule", () => {
             expect(problems.length).toEqual(expectedProblems.length);
             expect(new Set(problems)).toEqual(new Set(expectedProblems));
         });
-
-        describe("Expected to fail", () => {
-            it.failing("Rule tags: yet to implement", () => {
-                const text = `Feature: a feature file
-@tag1
-    Rule: a rule
-  @tag2
-    Rule: a rule
-        @tag2
-    Rule: a rule`;
-
-                const expectedProblems = [
-                    // no indent
-                    generateProblem({ line: 2, column: 1 }, 4, 0, config),
-                    // less indent
-                    generateProblem({ line: 4, column: 3 }, 4, 2, config),
-                    // more indent
-                    generateProblem({ line: 6, column: 9 }, 4, 8, config),
-                ];
-
-                const ast = parser.parse(text);
-                const rule = Indentation.run(ast, config);
-                const problems = rule.getProblems();
-
-                expect(problems.length).toEqual(expectedProblems.length);
-                expect(new Set(problems)).toEqual(new Set(expectedProblems));
-            });
-        });
     });
 
     describe("with fix option", () => {
@@ -81,54 +52,6 @@ describe("Indentation rule", () => {
                 expect(problem.fixData).toMatchObject(
                     expectedProblems[index].fixData
                 );
-            });
-        });
-
-        describe("Expected to fail", () => {
-            it.failing("Rule tags: yet to implement", () => {
-                const text = `Feature: a feature file
-@tag1
-    Rule: a rule
-  @tag2
-    Rule: a rule
-        @tag2
-    Rule: a rule`;
-
-                const expectedProblems = [
-                    // no indent
-                    generateProblem(
-                        { line: 2, column: 1 },
-                        4,
-                        0,
-                        configWithFix
-                    ),
-                    // less indent
-                    generateProblem(
-                        { line: 4, column: 3 },
-                        4,
-                        2,
-                        configWithFix
-                    ),
-                    // more indent
-                    generateProblem(
-                        { line: 6, column: 9 },
-                        4,
-                        8,
-                        configWithFix
-                    ),
-                ];
-
-                const ast = parser.parse(text);
-                const rule = Indentation.run(ast, configWithFix);
-                const problems = rule.getProblems();
-
-                expect(problems.length).toEqual(expectedProblems.length);
-                // ToDo: after implementing fix, remove above line
-                problems.forEach((problem, index) => {
-                    expect(problem.fixData).toMatchObject(
-                        expectedProblems[index].fixData
-                    );
-                });
             });
         });
     });
