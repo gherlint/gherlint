@@ -6,7 +6,7 @@ const parser = require("../helpers/parser");
 
 const config = {
     rules: {
-        indentation: ["warn", 4],
+        indentation: ["warn", 2],
     },
     cliOptions: {},
 };
