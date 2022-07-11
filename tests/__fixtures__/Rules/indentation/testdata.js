@@ -7,8 +7,7 @@ function generateProblem(location, expectedIndent, actualIndent, config) {
     if (config.cliOptions.fix) {
         fixProps = {
             fixData: {
-                replaceBy: " ".repeat(expectedIndent),
-                replaceTo: " ".repeat(actualIndent),
+                indent: " ".repeat(expectedIndent),
             },
             applyFix: jest.fn(),
         };

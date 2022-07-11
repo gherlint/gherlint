@@ -48,6 +48,7 @@ describe("Indentation rule", () => {
             const rule = Indentation.run(ast, configWithFix);
             const problems = rule.getProblems();
 
+            expect(problems.length).toEqual(expectedProblems.length);
             problems.forEach((problem, index) => {
                 expect(problem.fixData).toMatchObject(
                     expectedProblems[index].fixData
