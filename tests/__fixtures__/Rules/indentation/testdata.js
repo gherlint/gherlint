@@ -1,6 +1,6 @@
 const { format } = require("util");
 const generator = require("../../../lib/helpers/problemGenerator");
-const { Indentation } = require("../../../../lib/rules/indentation");
+const Indentation = require("../../../../lib/rules/indentation");
 
 function generateProblem(location, expectedIndent, actualIndent, config) {
     let fixProps = {};
