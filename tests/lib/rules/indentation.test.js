@@ -61,6 +61,23 @@ describe("Indentation rule", () => {
                 expect(problems.length).toEqual(expectedProblems.length);
                 expect(new Set(problems)).toEqual(new Set(expectedProblems));
             });
+            it.failing("Multiline tags: yet to implement", () => {
+                const text = `      @tag1
+  @tag1
+Feature: a feature`;
+
+                const expectedProblems = [
+                    generateProblem({ line: 1, column: 7 }, 0, 6, config),
+                    generateProblem({ line: 2, column: 3 }, 0, 2, config),
+                ];
+
+                const ast = parser.parse(text);
+                const rule = Indentation.run(ast, config);
+                const problems = rule.getProblems();
+
+                expect(problems.length).toEqual(expectedProblems.length);
+                expect(new Set(problems)).toEqual(new Set(expectedProblems));
+            });
         });
     });
 
