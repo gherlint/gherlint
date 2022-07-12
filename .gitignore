@@ -9,3 +9,6 @@ yarn-error.log
 !.yarn/releases
 
 .gherlint*
+
+# test coverage
+coverage
