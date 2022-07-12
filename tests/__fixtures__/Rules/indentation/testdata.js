@@ -21,7 +21,7 @@ function generateProblem(location, expectedIndent, actualIndent, config) {
     );
 }
 
-function getTestData(config) {
+function getValidTestData() {
     return [
         [
             "valid indentation (with Rule)",
@@ -121,6 +121,11 @@ So that
       | test1 |
       | test2 |`,
         ],
+    ];
+}
+
+function getInvalidTestData(config) {
+    return [
         [
             "invalid tag indentation",
             ` @tag1
@@ -488,7 +493,278 @@ Feature: a feature
     ];
 }
 
+function getTestDataWithFix(config, multilineFix = false) {
+    if (multilineFix) {
+        return [
+            [
+                "Scenario step DocString",
+                `Feature: a feature file
+    Scenario: a scenario
+      When a step
+      """
+some text
+end
+      """`,
+                generateProblem({ line: 4, column: 7 }, 8, 6, config),
+                `Feature: a feature file
+    Scenario: a scenario
+      When a step
+        """
+        some text
+        end
+        """`,
+            ],
+            [
+                "Scenario step DocString",
+                `Feature: a feature file
+    Scenario: a scenario
+      When a step
+"""
+some text
+end
+              """`,
+                generateProblem({ line: 4, column: 1 }, 8, 0, config),
+                `Feature: a feature file
+    Scenario: a scenario
+      When a step
+        """
+        some text
+        end
+        """`,
+            ],
+
+            [
+                "Scenario step DocString",
+                `Feature: a feature file
+  Scenario: a scenario
+    When a step
+      """
+      some text
+end
+            """`,
+                generateProblem({ line: 4, column: 6 }, 8, 0, config),
+                `Feature: a feature file
+  Scenario: a scenario
+    When a step
+      """
+      some text
+      end
+      """`,
+            ],
+        ];
+    }
+
+    return [
+        [
+            "Feature tag",
+            ` @tag1
+Feature: a feature file`,
+            generateProblem({ line: 1, column: 2 }, 0, 1, config),
+            `@tag1
+Feature: a feature file`,
+        ],
+        [
+            "Feature multiline tags",
+            `@tag1
+  @tag2
+Feature: a feature file`,
+            generateProblem({ line: 2, column: 3 }, 0, 2, config),
+            `@tag1
+@tag2
+Feature: a feature file`,
+        ],
+        [
+            "Feature",
+            "   Feature: a feature file",
+            generateProblem({ line: 1, column: 4 }, 0, 3, config),
+            "Feature: a feature file",
+        ],
+        [
+            "Rule",
+            `Feature: a feature file
+Rule: a rule`,
+            generateProblem({ line: 2, column: 1 }, 2, 0, config),
+            `Feature: a feature file
+  Rule: a rule`,
+        ],
+        [
+            "Rule tag",
+            `Feature: a feature file
+@tag
+  Rule: a rule`,
+            generateProblem({ line: 2, column: 1 }, 2, 0, config),
+            `Feature: a feature file
+  @tag
+  Rule: a rule`,
+        ],
+        [
+            "Rule multiline tag",
+            `Feature: a feature file
+  @tag1
+    @tag2
+  Rule: a rule`,
+            generateProblem({ line: 3, column: 5 }, 2, 4, config),
+            `Feature: a feature file
+  @tag1
+  @tag2
+  Rule: a rule`,
+        ],
+        [
+            "Background (with Rule)",
+            `Feature: a feature file
+  Rule: a rule
+  Background: a background`,
+            generateProblem({ line: 3, column: 3 }, 4, 2, config),
+            `Feature: a feature file
+  Rule: a rule
+    Background: a background`,
+        ],
+        [
+            "Step (with Rule)",
+            `Feature: a feature file
+  Rule: a rule
+    Background: a background
+Given a step`,
+            generateProblem({ line: 4, column: 1 }, 6, 0, config),
+            `Feature: a feature file
+  Rule: a rule
+    Background: a background
+      Given a step`,
+        ],
+        [
+            "Background",
+            `Feature: a feature file
+Background: a background`,
+            generateProblem({ line: 2, column: 1 }, 2, 0, config),
+            `Feature: a feature file
+  Background: a background`,
+        ],
+        [
+            "Background step",
+            `Feature: a feature file
+  Background: a background
+Given a step`,
+            generateProblem({ line: 3, column: 1 }, 4, 0, config),
+            `Feature: a feature file
+  Background: a background
+    Given a step`,
+        ],
+        [
+            "Scenario",
+            `Feature: a feature file
+        Scenario: a scenario`,
+            generateProblem({ line: 2, column: 9 }, 2, 8, config),
+            `Feature: a feature file
+  Scenario: a scenario`,
+        ],
+        [
+            "Scenario tag",
+            `Feature: a feature file
+      @tag
+  Scenario: a scenario`,
+            generateProblem({ line: 2, column: 7 }, 2, 6, config),
+            `Feature: a feature file
+  @tag
+  Scenario: a scenario`,
+        ],
+        [
+            "Scenario multiline tag",
+            `Feature: a feature file
+  @tag1
+@tag2
+  Scenario: a scenario`,
+            generateProblem({ line: 3, column: 1 }, 2, 0, config),
+            `Feature: a feature file
+  @tag1
+  @tag2
+  Scenario: a scenario`,
+        ],
+        [
+            "Scenario step",
+            `Feature: a feature file
+  Scenario: a scenario
+      When a step`,
+            generateProblem({ line: 3, column: 7 }, 4, 6, config),
+            `Feature: a feature file
+  Scenario: a scenario
+    When a step`,
+        ],
+        [
+            "Scenario datatable",
+            `Feature: a feature file
+  Scenario: a scenario
+    When a step
+    | col1 |`,
+            generateProblem({ line: 4, column: 5 }, 6, 4, config),
+            `Feature: a feature file
+  Scenario: a scenario
+    When a step
+      | col1 |`,
+        ],
+        [
+            "Scenario multiline datatable",
+            `Feature: a feature file
+  Scenario: a scenario
+    When a step
+      | row1 |
+| row2 |`,
+            generateProblem({ line: 5, column: 1 }, 6, 0, config),
+            `Feature: a feature file
+  Scenario: a scenario
+    When a step
+      | row1 |
+      | row2 |`,
+        ],
+        [
+            "Scenario Outline",
+            `Feature: a feature file
+ Scenario Outline: a scenario`,
+            generateProblem({ line: 2, column: 2 }, 2, 1, config),
+            `Feature: a feature file
+  Scenario Outline: a scenario`,
+        ],
+        [
+            "Examples",
+            `Feature: a feature file
+  Scenario Outline: a scenario
+  Examples:`,
+            generateProblem({ line: 3, column: 3 }, 4, 2, config),
+            `Feature: a feature file
+  Scenario Outline: a scenario
+    Examples:`,
+        ],
+        [
+            "Example table",
+            `Feature: a feature file
+  Scenario Outline: a scenario
+    Examples:
+  | test1  | data1  |`,
+            generateProblem({ line: 4, column: 3 }, 6, 2, config),
+            `Feature: a feature file
+  Scenario Outline: a scenario
+    Examples:
+      | test1  | data1  |`,
+        ],
+        [
+            "Example table multiple rows",
+            `Feature: a feature file
+  Scenario Outline: a scenario
+    Examples:
+      | test1  | data1  |
+            | test2  | data2  |`,
+            generateProblem({ line: 5, column: 13 }, 6, 12, config),
+            `Feature: a feature file
+  Scenario Outline: a scenario
+    Examples:
+      | test1  | data1  |
+      | test2  | data2  |`,
+        ],
+    ];
+}
+
 module.exports = {
     generateProblem,
-    getTestData,
+    getValidTestData,
+    getInvalidTestData,
+    getTestDataWithFix,
 };
