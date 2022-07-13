@@ -1,4 +1,4 @@
-name: lint
+name: lint-unit
 
 on:
     push:
@@ -7,7 +7,7 @@ on:
     pull_request:
 
 jobs:
-    lint:
+    lint-unit:
         runs-on: ubuntu-latest
         steps:
             - name: cancel-previous-run
@@ -30,3 +30,6 @@ jobs:
 
             - name: eslint
               run: yarn lint
+
+            - name: unit-tests
+              run: yarn test:unit --coverage false
