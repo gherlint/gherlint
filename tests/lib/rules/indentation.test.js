@@ -40,7 +40,9 @@ describe("Indentation rule", () => {
 
     describe("invalid test data", () => {
         describe("without fix option", () => {
-            const testData = getInvalidTestData(config);
+            const testData = getInvalidTestData(config).filter(
+                (test) => test[4] !== true
+            );
 
             it.each(testData)(
                 "check indent: %s",
@@ -55,6 +57,22 @@ describe("Indentation rule", () => {
                     );
                 }
             );
+
+            describe("Failing", () => {
+                const failingTestData = getInvalidTestData(config).filter(
+                    (test) => test[4] === true
+                );
+                failingTestData.forEach((test) => {
+                    it.failing(`check indent: ${test[0]}`, () => {
+                        const ast = parser.parse(test[1]);
+                        const rule = Indentation.run(ast, config);
+                        const problems = rule.getProblems();
+
+                        expect(problems.length).toEqual(test[2].length);
+                        expect(new Set(problems)).toEqual(new Set(test[2]));
+                    });
+                });
+            });
         });
 
         describe("with fix option", () => {
@@ -62,7 +80,9 @@ describe("Indentation rule", () => {
                 ...config,
                 cliOptions: { fix: true },
             };
-            const testData = getInvalidTestData(configWithFix);
+            const testData = getInvalidTestData(configWithFix).filter(
+                (test) => test[4] !== true
+            );
 
             it.each(testData)(
                 "check fix data: %s",
@@ -81,6 +101,22 @@ describe("Indentation rule", () => {
                     });
                 }
             );
+
+            describe("Failing", () => {
+                const failingTestData = getInvalidTestData(
+                    configWithFix
+                ).filter((test) => test[4] === true);
+                failingTestData.forEach((test) => {
+                    it.failing(`check indent: ${test[0]}`, () => {
+                        const ast = parser.parse(test[1]);
+                        const rule = Indentation.run(ast, config);
+                        const problems = rule.getProblems();
+
+                        expect(problems.length).toEqual(test[2].length);
+                        expect(new Set(problems)).toEqual(new Set(test[2]));
+                    });
+                });
+            });
         });
     });
 
