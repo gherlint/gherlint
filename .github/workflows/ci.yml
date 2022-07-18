@@ -32,4 +32,4 @@ jobs:
               run: yarn lint
 
             - name: unit-tests
-              run: yarn test:unit --coverage false
+              run: yarn test:unit --silent

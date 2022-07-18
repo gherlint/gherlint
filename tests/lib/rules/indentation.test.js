@@ -15,14 +15,13 @@ const config = {
 
 describe("Indentation rule", () => {
     describe("empty ast", () => {
-        it("empty args: should return undefined", () => {
-            const rule = Indentation.run();
-            expect(rule.getProblems()).toEqual([]);
-        });
-        it("empty ast object: should return undefined", () => {
-            const rule = Indentation.run({});
-            expect(rule.getProblems()).toEqual([]);
-        });
+        it.each([[undefined], [null], [""], [{}]])(
+            "invalid ast '%s': should return undefined",
+            (ast) => {
+                const rule = Indentation.run(ast);
+                expect(rule.getProblems()).toEqual([]);
+            }
+        );
     });
 
     describe("valid test data", () => {
