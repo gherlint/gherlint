@@ -42,8 +42,10 @@
     "devDependencies": {
         "eslint": "^8.13.0",
         "eslint-plugin-jest": "^26.5.3",
+        "fs-monkey": "^1.0.3",
         "husky": "^8.0.1",
         "jest": "^28.1.2",
+        "memfs": "^3.4.7",
         "pinst": "^3.0.0"
     }
 }
