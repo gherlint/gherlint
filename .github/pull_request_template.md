@@ -13,26 +13,17 @@ Please set the following labels:
 -->
 
 ## Description
-<!--- Describe your changes in detail -->
 
 ## Related Issue
-<!--- This project only accepts pull requests related to open issues -->
-<!--- If suggesting a new feature or change, please discuss it in an issue first -->
-<!--- If fixing a bug, there should be an issue describing it with steps to reproduce -->
-<!--- Please link to the issue here: -->
 - Fixes <issue_link>
+- Part of <issue_link>
 
 ## Motivation and Context
-<!--- Why is this change required? What problem does it solve? -->
 
 ## How Has This Been Tested?
-
-<!--- Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration -->
-
 - test environment:
 - test case 1:
 - test case 2:
-- ...
 
 ## Screenshots (if appropriate):
 
@@ -43,7 +34,6 @@ Please set the following labels:
 - [ ] Breaking change (fix or feature that would cause existing functionality to change)
 - [ ] Tests only (no source changes)
 - [ ] Documentation only (no source changes)
-
 
 ## Checklist:
 <!-- Tick the checkboxes when done. -->
