@@ -25,7 +25,10 @@ assignees: ''
 <p>
 
 ```console
-version=somevalue
+OS: Ubuntu 20.04
+NodeJS Version: v16.0.0
+Package Manager: `npm`, `yarn`, etc
+Package Manager Version: v1.0.0
 ```
 
 </p>

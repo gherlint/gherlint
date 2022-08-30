@@ -1,5 +1,5 @@
 <!--
-Thanks for submitting a change to gherlint!
+Thanks for submitting a change to GherLint!
 
 To make it possible for us to get your change reviewed and merged please carefully fill out the requested information below.
 
@@ -7,7 +7,6 @@ Please note that any kind of change needs first be submitted to the master branc
 
 Please set the following labels:
 
-- Set label "Status:Needs-Review" for review or "Status:In-Progress" if the PR still has open tasks.
 - Assignment: assign to self
 - Reviewers: pick at least one
 -->
@@ -28,7 +27,6 @@ Please set the following labels:
 ## Screenshots (if appropriate):
 
 ## Types of changes
-<!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to change)
@@ -36,7 +34,6 @@ Please set the following labels:
 - [ ] Documentation only (no source changes)
 
 ## Checklist:
-<!-- Tick the checkboxes when done. -->
 - [ ] Code changes
 - [ ] Unit tests added
 - [ ] Documentation updated

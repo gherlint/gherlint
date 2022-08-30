@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an idea for improving gherlint
+about: Suggest an idea for improving GherLint
 title: ''
 labels: Category:Feature, Topic:needs-triage
 assignees: ''
@@ -13,6 +13,6 @@ assignees: ''
 
 ## Describe alternatives you've considered
 
-## What value does this feature add to the gherlint?
+## What value does this feature add to the GherLint?
 
 ## Additional context
