@@ -1,7 +1,7 @@
 const { extname } = require("path");
 const fs = require("fs");
 const glob = require("glob");
-const log = require("./logging/logger");
+const log = require("../lib/logging/logger");
 
 module.exports = class Path {
     static get FEATURE_FILE_EXTENSION() {

@@ -1,5 +1,5 @@
 const fs = require("fs");
-const log = require("./logging/logger");
+const log = require("../lib/logging/logger");
 
 module.exports = class Path {
     static readFile(file) {
