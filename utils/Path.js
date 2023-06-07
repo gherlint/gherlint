@@ -1,25 +1,7 @@
-const { extname } = require("path");
 const fs = require("fs");
-const glob = require("glob");
 const log = require("../lib/logging/logger");
 
 module.exports = class Path {
-    static get FEATURE_FILE_EXTENSION() {
-        return ".feature";
-    }
-
-    static searchFeatureFiles(pattern, files = []) {
-        glob.sync(pattern, { absolute: true, cwd: Path.cwd() }).map((match) => {
-            if (Path.isDir(match)) {
-                return Path.searchFeatureFiles(`${match}/*`, files);
-            }
-            if (extname(match) === Path.FEATURE_FILE_EXTENSION) {
-                return files.push(match);
-            }
-        });
-        return files;
-    }
-
     static isFile(resourcePath) {
         try {
             return fs.statSync(resourcePath).isFile();
