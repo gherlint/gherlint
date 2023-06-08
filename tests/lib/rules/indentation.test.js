@@ -28,7 +28,6 @@ describe("Indentation rule", () => {
         it.each(testData)("check indent: %s", (_, text) => {
             const ast = parser.parse(text);
             const problems = Indentation.run(ast, config);
-            console.log(problems);
             expect(problems.length).toEqual(0);
             expect(problems).toEqual([]);
         });
@@ -36,7 +35,7 @@ describe("Indentation rule", () => {
 
     describe("invalid test data", () => {
         describe("without fix option", () => {
-            const testData = getInvalidTestData(config).filter(
+            const testData = getInvalidTestData().filter(
                 (test) => test[4] !== true
             );
 
@@ -47,14 +46,66 @@ describe("Indentation rule", () => {
                     const problems = Indentation.run(ast, config);
 
                     expect(problems.length).toEqual(expectedProblems.length);
-                    expect(new Set(problems)).toEqual(
-                        new Set(expectedProblems)
-                    );
+                    problems.forEach((problem, index) => {
+                        expect(problem.location).toEqual(
+                            expectedProblems[index].location
+                        );
+                        expect(problem.message).toEqual(
+                            expectedProblems[index].message
+                        );
+                    });
                 }
             );
 
+            // TODO: need a fix
             describe("Failing", () => {
-                const failingTestData = getInvalidTestData(config).filter(
+                const failingTestData = getInvalidTestData().filter(
+                    (test) => test[4] === true
+                );
+                failingTestData.forEach((test) => {
+                    it.failing(`check indent: ${test[0]}`, () => {
+                        const ast = parser.parse(test[1]);
+                        const problems = Indentation.run(ast, config);
+
+                        expect(problems.length).toEqual(test[2].length);
+                        problems.forEach((problem, index) => {
+                            expect(problem.location).toEqual(
+                                test[2][index].location
+                            );
+                            expect(problem.message).toEqual(
+                                test[2][index].message
+                            );
+                        });
+                    });
+                });
+            });
+        });
+
+        describe("with fix option", () => {
+            const testData = getInvalidTestData().filter(
+                (test) => test[4] !== true
+            );
+
+            it.each(testData)(
+                "check fix data: %s",
+                (_, text, expectedProblems) => {
+                    const ast = parser.parse(text);
+
+                    const problems = Indentation.run(ast, config);
+
+                    expect(problems.length).toEqual(expectedProblems.length);
+                    problems.forEach((problem, index) => {
+                        expect(problem.applyFix).toBeInstanceOf(Function);
+                        expect(problem.fixData).toMatchObject(
+                            expectedProblems[index].fixData
+                        );
+                    });
+                }
+            );
+
+            // TODO: need a fix
+            describe("Failing", () => {
+                const failingTestData = getInvalidTestData().filter(
                     (test) => test[4] === true
                 );
                 failingTestData.forEach((test) => {
@@ -68,58 +119,10 @@ describe("Indentation rule", () => {
                 });
             });
         });
-
-        // TODO: enable after fix option is implemented
-        describe.skip("with fix option", () => {
-            const configWithFix = {
-                ...config,
-                cliOptions: { fix: true },
-            };
-            const testData = getInvalidTestData(configWithFix).filter(
-                (test) => test[4] !== true
-            );
-
-            it.each(testData)(
-                "check fix data: %s",
-                (_, text, expectedProblems) => {
-                    const ast = parser.parse(text);
-
-                    const problems = Indentation.run(ast, configWithFix);
-
-                    expect(problems.length).toEqual(expectedProblems.length);
-                    problems.forEach((problem, index) => {
-                        expect(problem.applyFix).toBeInstanceOf(Function);
-                        expect(problem.fixData).toMatchObject(
-                            expectedProblems[index].fixData
-                        );
-                    });
-                }
-            );
-
-            describe("Failing", () => {
-                const failingTestData = getInvalidTestData(
-                    configWithFix
-                ).filter((test) => test[4] === true);
-                failingTestData.forEach((test) => {
-                    it.failing(`check indent: ${test[0]}`, () => {
-                        const ast = parser.parse(test[1]);
-                        const problems = Indentation.run(ast, config);
-
-                        expect(problems.length).toEqual(test[2].length);
-                        expect(new Set(problems)).toEqual(new Set(test[2]));
-                    });
-                });
-            });
-        });
     });
 
-    // TODO: enable after fix option is implemented
-    describe.skip("method: fixSingleLine", () => {
-        const configWithFix = {
-            ...config,
-            cliOptions: { fix: true },
-        };
-        const testData = getTestDataWithFix(configWithFix);
+    describe("method: fixSingleLine", () => {
+        const testData = getTestDataWithFix();
 
         it.each(testData)(
             "apply fix: %s",
@@ -132,13 +135,8 @@ describe("Indentation rule", () => {
         );
     });
 
-    // TODO: enable after fix option is implemented
-    describe.skip("method: fixMultiLine", () => {
-        const configWithFix = {
-            ...config,
-            cliOptions: { fix: true },
-        };
-        const testData = getTestDataWithFix(configWithFix, true);
+    describe("method: fixMultiLine", () => {
+        const testData = getTestDataWithFix(true);
 
         it.each(testData)(
             "apply fix: %s",
