@@ -60,7 +60,7 @@ Please follow these guidelines when creating any type of Pull Requests:
 
 ### Git Commit Message
 
-We strongly recommend you to follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification while writing git commit messages.
+We strongly recommend that you follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification while writing git commit messages.
 
 Quick summary of the specification:
 
