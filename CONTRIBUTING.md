@@ -60,11 +60,55 @@ Please follow these guidelines when creating any type of Pull Requests:
 
 ### Git Commit Message
 
-We recommend you to follow the instructions below while writing git commit messages:
+We strongly recommend you to follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification while writing git commit messages.
 
--   Use the present tense (**"Add feature"** not **"Added feature"**)
--   Use the imperative mood (**"Get file from..."** not **"Gets file from..."**)
+Quick summary of the specification:
+
+```bash
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+Some commit message examples:
+
+```
+feat: allow config extension
+feat(rule): add no_white_space rule
+docs: fix typo in README
+```
+
+Some of the types that can be used:
+
+```bash
+[
+  'chore',
+  'ci',
+  'docs',
+  'feat',
+  'fix',
+  'refactor',
+  'revert',
+  'style',
+  'test'
+];
+```
+
+Key points:
+
+-   Use the present tense
+    ```diff
+    -feat: added feature
+    +feat: add feature
+    ```
+-   Use the imperative mood
+    ```diff
+    -feat: adds feature
+    +feat: add feature
+    ```
 -   Make it short and descriptive
--   Sign your commit
+-   **Sign your commit**
 
 WE ENCOURAGE YOU TO BECOME PART OF US. THANKS :heart:

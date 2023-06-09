@@ -1,5 +1,7 @@
 # Adding New Rule
 
+> The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
+
 Rule can be simply defined as the convention to be followed while writing the feature file in Gherkin language. The purpose of defining rules is to standardize the feature files written by different teams or individuals. Ultimately, they helps to maintain the well organized and readable scenarios within a feature file.
 
 ## Creating a Rule File
