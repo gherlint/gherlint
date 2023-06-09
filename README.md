@@ -2,9 +2,21 @@
 
 GherLint, a tool for checking patterns on Gherkin files.
 
-## Usage
+## Installation
 
 _[TBD]_
+
+## Usage
+
+```bash
+./bin/gherlint.js <path-to-feature-file>
+```
+
+Apply fix with `--fix` option.
+
+```bash
+./bin/gherlint.js --fix <path-to-feature-file>
+```
 
 ## Configuration
 
@@ -14,17 +26,21 @@ _[TBD]_
 
 GherLint adheres to this [Code of Conduct](CODE_OF_CONDUCT.md).
 
-## Issues
+## Contributing
+
+Please make sure to read our [Contributing Guide](CONTRIBUTING.md) before making a pull request.
+
+### Feature Request / Bug Report
 
 Please make sure to follow the issue templates when opening an issue.
 
 For feature request, use this template: [Feature Request](.github/ISSUE_TEMPLATE/feature_request.md).
 
-For bug report, use this template: [Feature Request](.github/ISSUE_TEMPLATE/bug_report.md).
+For bug report, use this template: [Bug Report](.github/ISSUE_TEMPLATE/bug_report.md).
 
-## Contributing
+### Adding New Rule
 
-Please make sure to read our [Contributing Guide](CONTRIBUTING.md) before making a pull request.
+If you want to contribute by adding a new rule, please follow the [Adding New Rule](docs/adding_new_rule.md) guide.
 
 ## License
 
