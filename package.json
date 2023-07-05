@@ -26,7 +26,7 @@
     "scripts": {
         "lint": "eslint './**/*.js'",
         "test:unit": "jest",
-        "commitlint": "commitlint --edit",
+        "commitlint": "commitlint",
         "postinstall": "husky install",
         "prepack": "pinst --disable",
         "postpack": "pinst --enable"
