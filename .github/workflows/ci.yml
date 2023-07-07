@@ -4,7 +4,6 @@ on:
     push:
         branches:
             - master
-            - 1.0.0
     pull_request:
 
 jobs:
@@ -19,6 +18,8 @@ jobs:
 
             - name: checkout
               uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
 
             - name: setup-node
               uses: actions/setup-node@v3
@@ -31,6 +32,14 @@ jobs:
 
             - name: eslint
               run: yarn lint
+
+            - name: commitlint-push
+              if: github.event_name == 'push'
+              run: yarn commitlint --from HEAD~1 --to HEAD --verbose
+
+            - name: commitlint-pr
+              if: github.event_name == 'pull_request'
+              run: yarn commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
 
             - name: unit-tests
               run: yarn test:unit --silent

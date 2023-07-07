@@ -1,6 +1,6 @@
 {
     "name": "gherlint",
-    "version": "1.0.0-alpha.1",
+    "version": "0.0.1",
     "description": "A pattern checker for Gherkin language.",
     "bin": "./bin/gherlint.js",
     "main": "./lib/index.js",
@@ -26,6 +26,7 @@
     "scripts": {
         "lint": "eslint './**/*.js'",
         "test:unit": "jest",
+        "commitlint": "commitlint",
         "postinstall": "husky install",
         "prepack": "pinst --disable",
         "postpack": "pinst --enable"
@@ -40,6 +41,8 @@
         "terminal-kit": "^2.4.0"
     },
     "devDependencies": {
+        "@commitlint/cli": "^17.6.6",
+        "@commitlint/config-conventional": "^17.6.6",
         "eslint": "^8.13.0",
         "eslint-plugin-jest": "^26.5.3",
         "husky": "^8.0.1",
