@@ -1,0 +1,7 @@
+version: 2
+updates:
+    - package-ecosystem: "npm"
+      directory: "/"
+      commit-message:
+          # Prefix all commit messages with "chore: "
+          prefix: "chore"
