@@ -320,8 +320,8 @@ describe("class: GherlintConfig", () => {
             it.each([
                 [{}, defaultConfig],
                 [
-                    { files: "features/web/**/*.feature" },
-                    getUpdatedConfig("files", "features/web/**/*.feature"),
+                    { files: ["/path/to/features"] },
+                    getUpdatedConfig("files", ["/path/to/features"]),
                 ],
                 [
                     { rules: { indentation: ["error"] } },
