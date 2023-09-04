@@ -11,13 +11,12 @@ jest.mock("fs", () => {
     const { ufs } = require("unionfs");
     return ufs.use(fs);
 });
-jest.mock("../../../utils/Path", () => ({
-    cwd: jest.fn().mockReturnValue(tmpCwd),
-}));
+process.cwd = () => tmpCwd;
 
 const fs = require("fs");
 const { Volume } = require("memfs");
 const GherlintConfig = require("../../../lib/gherlint/GherlintConfig");
+// const { gherlintrc: defaultConfig } = require("../../../lib/config");
 
 describe("class: GherlintConfig", () => {
     describe("init config", () => {
@@ -238,6 +237,82 @@ describe("class: GherlintConfig", () => {
                     vfs.reset();
                 }
             );
+        });
+
+        describe("getFeatureFiles", () => {
+            let vfs;
+            beforeAll(() => {
+                vfs = createVfs({
+                    "features/webUI/login.feature": "",
+                    "features/apiCreate/createUser.feature": "",
+                    "features/signup.feature": "",
+                    "features/lorem.txt": "",
+                });
+                fs.use(vfs);
+            });
+
+            afterAll(() => {
+                vfs.reset();
+            });
+
+            it("should return '[]' if no arg is provided", () => {
+                const config = new GherlintConfig({});
+
+                expect(config.getFeatureFiles()).toEqual([]);
+            });
+            it.each([
+                "*.feature",
+                "not-existing/**/*.feature",
+                "features/nonSuite/*.feature",
+            ])("should return '[]' if not found", (pattern) => {
+                const config = new GherlintConfig({});
+
+                // Note: have to provide root vfs path with memfs
+                const files = config.getFeatureFiles(`${tmpCwd}/${pattern}`);
+
+                expect(files).toHaveLength(0);
+                expect(config.getFeatureFiles()).toEqual([]);
+            });
+            it.each([
+                [
+                    ["features"],
+                    [
+                        `${tmpCwd}/features/signup.feature`,
+                        `${tmpCwd}/features/apiCreate/createUser.feature`,
+                        `${tmpCwd}/features/webUI/login.feature`,
+                    ],
+                    3,
+                ],
+                [
+                    ["features/**/*.feature"],
+                    [
+                        `${tmpCwd}/features/signup.feature`,
+                        `${tmpCwd}/features/apiCreate/createUser.feature`,
+                        `${tmpCwd}/features/webUI/login.feature`,
+                    ],
+                    3,
+                ],
+                [
+                    ["features/*.feature"],
+                    [`${tmpCwd}/features/signup.feature`],
+                    1,
+                ],
+                [
+                    ["features/*/*.feature"],
+                    [
+                        `${tmpCwd}/features/apiCreate/createUser.feature`,
+                        `${tmpCwd}/features/webUI/login.feature`,
+                    ],
+                    2,
+                ],
+            ])("should return feature files", (pattern, results, length) => {
+                const config = new GherlintConfig({});
+
+                const files = config.getFeatureFiles(`${tmpCwd}/${pattern}`);
+
+                expect(files).toHaveLength(length);
+                expect(files.sort()).toEqual(results.sort());
+            });
         });
     });
 });
