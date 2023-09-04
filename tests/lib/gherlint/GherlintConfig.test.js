@@ -335,6 +335,70 @@ describe("class: GherlintConfig", () => {
                 );
             });
         });
+
+        describe("validateConfig", () => {
+            afterAll(() => {
+                jest.clearAllMocks();
+            });
+
+            it.each([
+                {},
+                {
+                    files: ["/path/to/features"],
+                },
+                {
+                    rules: {},
+                },
+                {
+                    rules: { indentation: ["info"] },
+                },
+            ])("should not complain if config is valid", (userConfig) => {
+                jest.spyOn(
+                    GherlintConfig.prototype,
+                    "validateRules"
+                ).mockReturnValue(null);
+
+                const config = new GherlintConfig({});
+
+                expect(config.validateConfig(userConfig)).toEqual(undefined);
+            });
+            it.each([
+                {
+                    file: ["/path/to/features"],
+                },
+                {
+                    files: {},
+                },
+                {
+                    unknownProp: {},
+                },
+                {
+                    rules: null,
+                },
+            ])("should complain if config is invalid", (userConfig) => {
+                const spyOnExit = jest
+                    .spyOn(process, "exit")
+                    .mockImplementation(() => {
+                        throw new Error("process.exit");
+                    });
+
+                const config = new GherlintConfig({});
+                config.configFilePath = ".gherlintrc";
+
+                expect(() => config.validateConfig(userConfig)).toThrow();
+                expect(spyOnExit).toHaveBeenCalledTimes(1);
+            });
+            it("should call validateRules", () => {
+                const spyValidateRules = jest
+                    .spyOn(GherlintConfig.prototype, "validateRules")
+                    .mockReturnValue(null);
+
+                const config = new GherlintConfig({});
+                config.validateConfig({ rules: {} });
+
+                expect(spyValidateRules).toHaveBeenCalledWith({});
+            });
+        });
     });
 });
 
