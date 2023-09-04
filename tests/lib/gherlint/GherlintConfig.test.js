@@ -1,4 +1,5 @@
 const path = require("path");
+const { cloneDeep } = require("lodash");
 
 const tmpCwd = "/myproject";
 const fixturesPath = path.resolve(
@@ -16,7 +17,7 @@ process.cwd = () => tmpCwd;
 const fs = require("fs");
 const { Volume } = require("memfs");
 const GherlintConfig = require("../../../lib/gherlint/GherlintConfig");
-// const { gherlintrc: defaultConfig } = require("../../../lib/config");
+const { gherlintrc: defaultConfig } = require("../../../lib/config");
 
 describe("class: GherlintConfig", () => {
     describe("init config", () => {
@@ -314,10 +315,36 @@ describe("class: GherlintConfig", () => {
                 expect(files.sort()).toEqual(results.sort());
             });
         });
+
+        describe("mergeWithDefaultConfig", () => {
+            it.each([
+                [{}, defaultConfig],
+                [
+                    { files: "features/web/**/*.feature" },
+                    getUpdatedConfig("files", "features/web/**/*.feature"),
+                ],
+                [
+                    { rules: { indentation: ["error"] } },
+                    getUpdatedConfig("rules", { indentation: ["error", 2] }),
+                ],
+            ])("should merge config", (userConfig, expectedConfig) => {
+                const config = new GherlintConfig({});
+
+                expect(config.mergeWithDefaultConfig(userConfig)).toStrictEqual(
+                    expectedConfig
+                );
+            });
+        });
     });
 });
 
 // creates virtual file system from json
 function createVfs(vfsJson) {
     return Volume.fromJSON(vfsJson, tmpCwd);
+}
+
+function getUpdatedConfig(key, value) {
+    const config = cloneDeep(defaultConfig);
+    config[key] = value;
+    return config;
 }
