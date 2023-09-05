@@ -338,6 +338,7 @@ describe("class: GherlintConfig", () => {
 
         describe("validateConfig", () => {
             afterAll(() => {
+                jest.restoreAllMocks();
                 jest.clearAllMocks();
             });
 
@@ -397,6 +398,59 @@ describe("class: GherlintConfig", () => {
                 config.validateConfig({ rules: {} });
 
                 expect(spyValidateRules).toHaveBeenCalledWith({});
+            });
+        });
+
+        describe("validateRules", () => {
+            afterAll(() => {
+                jest.restoreAllMocks();
+                jest.clearAllMocks();
+            });
+
+            it.each([
+                {},
+                {
+                    indentation: "off",
+                },
+                {
+                    indentation: ["error"],
+                },
+                {
+                    indentation: ["off", 2],
+                },
+                {
+                    indentation: ["warn", 4],
+                },
+            ])("should not complain if rules are valid", (rules) => {
+                const config = new GherlintConfig({});
+
+                expect(config.validateRules(rules)).toEqual(undefined);
+            });
+            it.each([
+                {
+                    indentation: true,
+                },
+                {
+                    indentation: "info",
+                },
+                {
+                    indentation: ["extra"],
+                },
+                {
+                    indentation: ["warn", 2, "extra"],
+                },
+            ])("should complain if rules are invalid", (rules) => {
+                const spyOnExit = jest
+                    .spyOn(process, "exit")
+                    .mockImplementation(() => {
+                        throw new Error("process.exit");
+                    });
+
+                const config = new GherlintConfig({});
+                config.configFilePath = ".gherlintrc";
+
+                expect(() => config.validateRules(rules)).toThrow();
+                expect(spyOnExit).toHaveBeenCalledTimes(1);
             });
         });
     });
