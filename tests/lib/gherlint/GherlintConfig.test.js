@@ -17,7 +17,10 @@ process.cwd = () => tmpCwd;
 const fs = require("fs");
 const { Volume } = require("memfs");
 const GherlintConfig = require("../../../lib/gherlint/GherlintConfig");
-const { gherlintrc: defaultConfig } = require("../../../lib/config");
+const {
+    gherlintrc: defaultConfig,
+    configFilePattern,
+} = require("../../../lib/config");
 
 describe("class: GherlintConfig", () => {
     describe("init config", () => {
@@ -451,6 +454,24 @@ describe("class: GherlintConfig", () => {
 
                 expect(() => config.validateRules(rules)).toThrow();
                 expect(spyOnExit).toHaveBeenCalledTimes(1);
+            });
+        });
+
+        describe("getDefaultConfig", () => {
+            it("should return default config", () => {
+                const config = new GherlintConfig({});
+
+                expect(config.getDefaultConfig()).toEqual(defaultConfig);
+            });
+        });
+
+        describe("getConfigFilePattern", () => {
+            it("should return config file pattern", () => {
+                const config = new GherlintConfig({});
+
+                expect(config.getConfigFilePattern()).toEqual(
+                    configFilePattern
+                );
             });
         });
     });
