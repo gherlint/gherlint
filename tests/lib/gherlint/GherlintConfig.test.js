@@ -474,6 +474,26 @@ describe("class: GherlintConfig", () => {
                 );
             });
         });
+
+        describe("initializeConfig", () => {
+            it("should generate a config file", async () => {
+                const vfs = createVfs({
+                    "package.json": "{}",
+                });
+                fs.use(vfs);
+
+                const config = new GherlintConfig({});
+
+                await expect(config.initializeConfig()).resolves.not.toThrow();
+                expect(fs.existsSync(`${tmpCwd}/.gherlintrc`)).toEqual(true);
+                expect(
+                    JSON.parse(fs.readFileSync(`${tmpCwd}/.gherlintrc`, "utf8"))
+                ).toEqual(defaultConfig);
+
+                // reset vfs
+                vfs.reset();
+            });
+        });
     });
 });
 
