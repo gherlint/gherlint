@@ -147,6 +147,13 @@ describe("class: GherlintConfig", () => {
                         ".gherlintrc.js": "{}",
                     },
                 ],
+                [
+                    ".gherlintrc.js",
+                    {
+                        ".gherlintrc.json": "{}",
+                        ".gherlintrc.js": "{}",
+                    },
+                ],
             ])("%s config file", (expectedFile, vfsJson) => {
                 const vfs = createVfs(vfsJson);
                 fs.use(vfs);
