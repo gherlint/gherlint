@@ -5203,9 +5203,9 @@ __metadata:
   linkType: hard
 
 "tree-kit@npm:^0.7.4":
-  version: 0.7.4
-  resolution: "tree-kit@npm:0.7.4"
-  checksum: 922c6569ba0856d29a9728cdef5c3673aa34c405254f483d7c2459e1f4178e1348445712df561f06519ed42773e2944b12f95b4f5707206dc0fdcd6338f584a9
+  version: 0.7.5
+  resolution: "tree-kit@npm:0.7.5"
+  checksum: f7d38152b9a75bec8ad4a581f7986129600004d3bb30554a6afabaa498c56aeb1c2ebbc1812f387c9d94fceb9a79a5dbf3624dd93ee89c996f84b63f904e4493
   languageName: node
   linkType: hard
 
