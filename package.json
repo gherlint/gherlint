@@ -37,7 +37,7 @@
         "commander": "^9.1.0",
         "glob": "^7.2.0",
         "lodash": "^4.17.21",
-        "minimatch": "^5.0.1",
+        "minimatch": "^9.0.3",
         "terminal-kit": "^3.0.0"
     },
     "devDependencies": {
