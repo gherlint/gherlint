@@ -2647,7 +2647,7 @@ __metadata:
     husky: ^8.0.3
     jest: ^28.1.2
     lodash: ^4.17.21
-    minimatch: ^5.0.1
+    minimatch: ^9.0.3
     pinst: ^3.0.0
     terminal-kit: ^3.0.0
   bin:
@@ -3976,6 +3976,15 @@ __metadata:
   dependencies:
     brace-expansion: ^2.0.1
   checksum: 15ce53d31a06361e8b7a629501b5c75491bc2b59712d53e802b1987121d91b433d73fcc5be92974fde66b2b51d8fb28d75a9ae900d249feb792bb1ba2a4f0a90
+  languageName: node
+  linkType: hard
+
+"minimatch@npm:^9.0.3":
+  version: 9.0.3
+  resolution: "minimatch@npm:9.0.3"
+  dependencies:
+    brace-expansion: ^2.0.1
+  checksum: 253487976bf485b612f16bf57463520a14f512662e592e95c571afdab1442a6a6864b6c88f248ce6fc4ff0b6de04ac7aa6c8bb51e868e99d1d65eb0658a708b5
   languageName: node
   linkType: hard
 
