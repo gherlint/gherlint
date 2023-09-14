@@ -328,16 +328,18 @@ describe("class: GherlintConfig", () => {
 
         describe("mergeWithDefaultConfig", () => {
             it.each([
-                [{}, defaultConfig],
+                ["empty config", {}, defaultConfig],
                 [
+                    "files config",
                     { files: ["/path/to/features"] },
                     getUpdatedConfig("files", ["/path/to/features"]),
                 ],
                 [
+                    "rules config",
                     { rules: { indentation: ["error"] } },
                     getUpdatedConfig("rules", { indentation: ["error", 2] }),
                 ],
-            ])("should merge config", (userConfig, expectedConfig) => {
+            ])("should merge config: %s", (_, userConfig, expectedConfig) => {
                 const config = new GherlintConfig({});
 
                 expect(config.mergeWithDefaultConfig(userConfig)).toStrictEqual(
@@ -511,6 +513,12 @@ function createVfs(vfsJson) {
 
 function getUpdatedConfig(key, value) {
     const config = cloneDeep(defaultConfig);
-    config[key] = value;
+
+    if (value instanceof Object && !(value instanceof Array)) {
+        config[key] = { ...config[key], ...value };
+    } else {
+        config[key] = value;
+    }
+
     return config;
 }

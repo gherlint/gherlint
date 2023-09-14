@@ -1,4 +1,4 @@
-const parser = require("../helpers/parser");
+const parser = require("../../helpers/parser");
 const {
     getValidTestData,
     getInvalidTestDataWithFix,
