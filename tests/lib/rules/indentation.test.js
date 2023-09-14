@@ -4,7 +4,7 @@ const {
     getTestDataWithFix,
 } = require("../../__fixtures__/Rules/indentation/fixture");
 const Indentation = require("../../../lib/rules/indentation");
-const parser = require("../helpers/parser");
+const parser = require("../../helpers/parser");
 
 const config = {
     type: "warn",

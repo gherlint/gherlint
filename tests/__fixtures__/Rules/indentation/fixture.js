@@ -1,5 +1,5 @@
 const { format } = require("util");
-const generator = require("../../../lib/helpers/problemGenerator");
+const generator = require("../../../helpers/problemGenerator");
 const Indentation = require("../../../../lib/rules/indentation");
 
 function generateProblem(location, expectedIndent, actualIndent) {
