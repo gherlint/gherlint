@@ -2,7 +2,7 @@ const {
     getValidTestData,
     getInvalidTestData,
     getTestDataWithFix,
-} = require("../../__fixtures__/Rules/indentation/testdata");
+} = require("../../__fixtures__/Rules/indentation/fixture");
 const Indentation = require("../../../lib/rules/indentation");
 const parser = require("../helpers/parser");
 
@@ -12,9 +12,9 @@ const config = {
 };
 
 describe("Indentation rule", () => {
-    describe("empty ast", () => {
+    describe("invalid ast", () => {
         it.each([[undefined], [null], [""], [{}]])(
-            "invalid ast '%s': should return undefined",
+            "'%s': should return undefined",
             (ast) => {
                 const problems = Indentation.run(ast);
                 expect(problems).toEqual([]);
@@ -22,100 +22,61 @@ describe("Indentation rule", () => {
         );
     });
 
-    describe("valid test data", () => {
+    describe("valid indentation", () => {
         const testData = getValidTestData();
 
-        it.each(testData)("check indent: %s", (_, text) => {
+        it.each(testData)("check indent: %s", (_, text, expectedProblems) => {
             const ast = parser.parse(text);
             const problems = Indentation.run(ast, config);
-            expect(problems.length).toEqual(0);
-            expect(problems).toEqual([]);
+            expect(problems.length).toEqual(expectedProblems.length);
+            expect(problems).toEqual(expectedProblems);
         });
     });
 
-    describe("invalid test data", () => {
-        describe("without fix option", () => {
-            const testData = getInvalidTestData().filter(
-                (test) => test[4] !== true
-            );
+    describe("invalid indentation", () => {
+        const testData = getInvalidTestData().filter(
+            (test) => test[4] !== true
+        );
 
-            it.each(testData)(
-                "check indent: %s",
-                (_, text, expectedProblems) => {
-                    const ast = parser.parse(text);
-                    const problems = Indentation.run(ast, config);
+        it.each(testData)("%s", (_, text, expectedProblems) => {
+            const ast = parser.parse(text);
+            const problems = Indentation.run(ast, config);
 
-                    expect(problems.length).toEqual(expectedProblems.length);
-                    problems.forEach((problem, index) => {
-                        expect(problem.location).toEqual(
-                            expectedProblems[index].location
-                        );
-                        expect(problem.message).toEqual(
-                            expectedProblems[index].message
-                        );
-                    });
-                }
-            );
-
-            // TODO: need a fix
-            describe("Failing", () => {
-                const failingTestData = getInvalidTestData().filter(
-                    (test) => test[4] === true
+            expect(problems.length).toEqual(expectedProblems.length);
+            problems.forEach((problem, index) => {
+                expect(problem.location).toEqual(
+                    expectedProblems[index].location
                 );
-                failingTestData.forEach((test) => {
-                    it.failing(`check indent: ${test[0]}`, () => {
-                        const ast = parser.parse(test[1]);
-                        const problems = Indentation.run(ast, config);
+                expect(problem.message).toEqual(
+                    expectedProblems[index].message
+                );
 
-                        expect(problems.length).toEqual(test[2].length);
-                        problems.forEach((problem, index) => {
-                            expect(problem.location).toEqual(
-                                test[2][index].location
-                            );
-                            expect(problem.message).toEqual(
-                                test[2][index].message
-                            );
-                        });
-                    });
-                });
+                expect(problem.applyFix).toBeInstanceOf(Function);
+                expect(problem.fixData).toMatchObject(
+                    expectedProblems[index].fixData
+                );
             });
         });
 
-        describe("with fix option", () => {
-            const testData = getInvalidTestData().filter(
-                (test) => test[4] !== true
+        // TODO: need a fix
+        // docString indentation tests
+        describe("Failing", () => {
+            const failingTestData = getInvalidTestData().filter(
+                (test) => test[4] === true // get all docstring test data
             );
-
-            it.each(testData)(
-                "check fix data: %s",
-                (_, text, expectedProblems) => {
-                    const ast = parser.parse(text);
-
+            failingTestData.forEach((test) => {
+                it.failing(test[0], () => {
+                    const ast = parser.parse(test[1]);
                     const problems = Indentation.run(ast, config);
 
-                    expect(problems.length).toEqual(expectedProblems.length);
+                    expect(problems.length).toEqual(test[2].length);
                     problems.forEach((problem, index) => {
-                        expect(problem.applyFix).toBeInstanceOf(Function);
-                        expect(problem.fixData).toMatchObject(
-                            expectedProblems[index].fixData
+                        expect(problem.location).toEqual(
+                            test[2][index].location
                         );
+                        expect(problem.message).toEqual(test[2][index].message);
                     });
-                }
-            );
-
-            // TODO: need a fix
-            describe("Failing", () => {
-                const failingTestData = getInvalidTestData().filter(
-                    (test) => test[4] === true
-                );
-                failingTestData.forEach((test) => {
-                    it.failing(`check indent: ${test[0]}`, () => {
-                        const ast = parser.parse(test[1]);
-                        const problems = Indentation.run(ast, config);
-
-                        expect(problems.length).toEqual(test[2].length);
-                        expect(new Set(problems)).toEqual(new Set(test[2]));
-                    });
+                    expect(new Set(problems)).toEqual(new Set(test[2]));
                 });
             });
         });
