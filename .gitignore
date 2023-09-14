@@ -8,7 +8,5 @@ yarn-error.log
 .yarn/*
 !.yarn/releases
 
-.gherlint*
-
 # test coverage
 coverage
