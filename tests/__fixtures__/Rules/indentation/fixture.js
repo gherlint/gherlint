@@ -1,5 +1,5 @@
 const { format } = require("util");
-const generator = require("../../../lib/helpers/problemGenerator");
+const generator = require("../../../helpers/problemGenerator");
 const Indentation = require("../../../../lib/rules/indentation");
 
 function generateProblem(location, expectedIndent, actualIndent) {
@@ -19,7 +19,7 @@ function generateProblem(location, expectedIndent, actualIndent) {
 function getValidTestData() {
     return [
         [
-            "valid indentation (with Rule)",
+            "with Rule",
             `@tag1
 Feature: a feature file
 As a user
@@ -44,32 +44,9 @@ So that
         | test1 |
         | test2 |`,
             [],
-            `@tag1
-Feature: a feature file
-As a user
-I want
-So that
-  @tag1
-  @tag2
-  Rule: a rule
-    Background: a background
-      Given a step
-    @tag2
-    Scenario: a scenario
-      When a step
-      Then a step
-    Scenario Outline: a scenario outline
-      When a data table step
-        | col1 | col2 |
-        | 1    | 2    |
-      And a step
-      But a step
-      Examples:
-        | test1 |
-        | test2 |`,
         ],
         [
-            "valid indentation",
+            "without Rule",
             `@tag1
 @tag2
 Feature: a feature file
@@ -93,28 +70,6 @@ So that
       | test1 |
       | test2 |`,
             [],
-            `@tag1
-@tag2
-Feature: a feature file
-As a user
-I want
-So that
-  Background: a background
-    Given a step
-  @tag2 @tag1
-  Scenario: a scenario
-    When a step
-    Then a step
-  @tag2 @tag3
-  Scenario Outline: a scenario outline
-    When a data table step
-      | col1 | col2 |
-      | 1    | 2    |
-    And a step
-    But a step
-    Examples:
-      | test1 |
-      | test2 |`,
         ],
     ];
 }
@@ -363,6 +318,7 @@ multiline text
       """
       multiline text
       """`,
+            true, // is docstring
         ],
         [
             "invalid DocString indentation (invalid on content)",
@@ -379,7 +335,7 @@ multiline text
       """
       multiline text
       """`,
-            true,
+            true, // is docstring
         ],
         [
             "invalid DocString indentation (invalid on docstring end)",
@@ -396,7 +352,7 @@ multiline text
       """
       multiline text
       """`,
-            true,
+            true, // is docstring
         ],
         [
             "invalid Scenario Outline indentation",
