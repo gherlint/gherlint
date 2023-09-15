@@ -2,14 +2,14 @@ const parser = require("../../helpers/parser");
 const {
     getValidTestData,
     getInvalidTestDataWithFix,
-} = require("../../__fixtures__/Rules/no_repetitive_steps/fixture");
-const NoRepetitiveSteps = require("../../../lib/rules/no_repetitive_steps");
+} = require("../../__fixtures__/Rules/no_repetitive_step_keyword/fixture");
+const NoRepetitiveSteps = require("../../../lib/rules/no_repetitive_step_keyword");
 
 const config = {
     type: "error",
 };
 
-describe("no_repetitive_steps", () => {
+describe("no_repetitive_step_keyword", () => {
     describe("invalid ast", () => {
         it.each([[undefined], [null], [""], [{}]])(
             "%s: should return undefined",

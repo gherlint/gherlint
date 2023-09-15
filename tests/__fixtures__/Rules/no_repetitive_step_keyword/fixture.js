@@ -1,6 +1,6 @@
 const { format } = require("util");
 const generator = require("../../../helpers/problemGenerator");
-const NoRepetitiveSteps = require("../../../../lib/rules/no_repetitive_steps");
+const NoRepetitiveSteps = require("../../../../lib/rules/no_repetitive_step_keyword");
 
 function generateProblem(location, stepKeyword) {
     return generator(
