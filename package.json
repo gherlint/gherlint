@@ -47,7 +47,7 @@
         "eslint-plugin-jest": "^27.4.0",
         "husky": "^8.0.3",
         "jest": "^28.1.2",
-        "memfs": "^4.2.1",
+        "memfs": "^4.3.0",
         "pinst": "^3.0.0",
         "unionfs": "^4.5.1"
     }
