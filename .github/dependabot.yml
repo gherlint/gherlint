@@ -4,6 +4,8 @@ updates:
       directory: "/"
       schedule:
           interval: weekly
+      # disable version updates. We only want to have security updates
+      open-pull-requests-limit: 0
       commit-message:
           # Prefix all commit messages with "chore: "
           prefix: "chore"
