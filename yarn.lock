@@ -624,28 +624,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cucumber/gherkin@npm:^24.0.0":
-  version: 24.1.0
-  resolution: "@cucumber/gherkin@npm:24.1.0"
+"@cucumber/gherkin@npm:^27.0.0":
+  version: 27.0.0
+  resolution: "@cucumber/gherkin@npm:27.0.0"
   dependencies:
-    "@cucumber/messages": ^19.1.4
-  checksum: 9d43fc7995efccb26b521e87c23eb64f7e6e94b542fceecb9652dabff9f80034b9411fc35df77968a14fd1e3fdd9ce13d603125ed735b913376a2605bc05bab4
+    "@cucumber/messages": ">=19.1.4 <=22"
+  checksum: e951304648ef9385935bf1e8bdca562f6fd66d5da27b7b840d7ee0f42992b0c86842f418f54c15ee6ce2c44bb5c3409af46ec75066fc9a4dcf3bc59ca3af64c1
   languageName: node
   linkType: hard
 
-"@cucumber/messages@npm:^19.1.4":
-  version: 19.1.4
-  resolution: "@cucumber/messages@npm:19.1.4"
-  dependencies:
-    "@types/uuid": 8.3.4
-    class-transformer: 0.5.1
-    reflect-metadata: 0.1.13
-    uuid: 9.0.0
-  checksum: 54981faf2a742bbd3a556e005b31bca1b05477414028360574d85b5ffb31d6dc5af9d8854126210271820a0edac6beea3258eb5dfce0fad0dc97c3517d31c890
-  languageName: node
-  linkType: hard
-
-"@cucumber/messages@npm:^22.0.0":
+"@cucumber/messages@npm:>=19.1.4 <=22, @cucumber/messages@npm:^22.0.0":
   version: 22.0.0
   resolution: "@cucumber/messages@npm:22.0.0"
   dependencies:
@@ -1272,13 +1260,6 @@ __metadata:
   version: 2.0.1
   resolution: "@types/stack-utils@npm:2.0.1"
   checksum: 205fdbe3326b7046d7eaf5e494d8084f2659086a266f3f9cf00bccc549c8e36e407f88168ad4383c8b07099957ad669f75f2532ed4bc70be2b037330f7bae019
-  languageName: node
-  linkType: hard
-
-"@types/uuid@npm:8.3.4":
-  version: 8.3.4
-  resolution: "@types/uuid@npm:8.3.4"
-  checksum: 6f11f3ff70f30210edaa8071422d405e9c1d4e53abbe50fdce365150d3c698fe7bbff65c1e71ae080cbfb8fded860dbb5e174da96fdbbdfcaa3fb3daa474d20f
   languageName: node
   linkType: hard
 
@@ -2699,7 +2680,7 @@ __metadata:
   dependencies:
     "@commitlint/cli": ^17.7.1
     "@commitlint/config-conventional": ^17.6.6
-    "@cucumber/gherkin": ^24.0.0
+    "@cucumber/gherkin": ^27.0.0
     "@cucumber/messages": ^22.0.0
     commander: ^9.1.0
     eslint: ^8.13.0

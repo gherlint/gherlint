@@ -32,7 +32,7 @@
         "postpack": "pinst --enable"
     },
     "dependencies": {
-        "@cucumber/gherkin": "^24.0.0",
+        "@cucumber/gherkin": "^27.0.0",
         "@cucumber/messages": "^22.0.0",
         "commander": "^9.1.0",
         "glob": "^7.2.0",
