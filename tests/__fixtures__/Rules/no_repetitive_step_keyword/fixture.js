@@ -86,7 +86,7 @@ function getInvalidTestData() {
   Rule: a rule
     Background: a background
       Given a step
-      Given astep
+      Given a step
     Scenario: a scenario
       When a step
       Then a step
@@ -101,7 +101,7 @@ function getInvalidTestData() {
             `Feature: a feature file
   Background: a background
     Given a step
-    Given astep
+    Given a step
   Scenario: a scenario
     When a step
     Then a step
@@ -132,82 +132,82 @@ function getInvalidTestDataWithFix() {
         [
             "with Rule: Background - Given",
             `Feature: a feature file
-Rule: a rule
-  Background: a background
-    Given a step
-    Given astep`,
-            generateProblem({ line: 5, column: 7 }, "Given"),
+  Rule: a rule
+    Background: a background
+      Given a step
+      Given a step`,
+            generateProblem({ line: 5 }, "Given"),
             `Feature: a feature file
-Rule: a rule
-  Background: a background
-    Given a step
-    And astep`,
+  Rule: a rule
+    Background: a background
+      Given a step
+      And a step`,
         ],
         [
             "without Rule: Background - Given",
             `Feature: a feature file
-Background: a background
-  Given a step
-  Given astep`,
-            generateProblem({ line: 4, column: 5 }, "Given"),
+  Background: a background
+    Given a step
+    Given a step`,
+            generateProblem({ line: 4 }, "Given"),
             `Feature: a feature file
-Background: a background
-  Given a step
-  And astep`,
+  Background: a background
+    Given a step
+    And a step`,
         ],
         [
             "without Rule: Scenario - When",
             `Feature: a feature file
-Scenario: a scenario
-  When a step
-  When a step`,
-            generateProblem({ line: 4, column: 5 }, "When"),
+  Scenario: a scenario
+    When a step
+    When a step`,
+            generateProblem({ line: 4 }, "When"),
             `Feature: a feature file
-Scenario: a scenario
-  When a step
-  And a step`,
+  Scenario: a scenario
+    When a step
+    And a step`,
         ],
         [
             "without Rule: Scenario - Then",
             `Feature: a feature file
-Scenario: a scenario
-  When a step
-  Then a step
-  Then a step`,
-            generateProblem({ line: 5, column: 5 }, "Then"),
+  Scenario: a scenario
+    When a step
+    Then a step
+    Then a step`,
+            generateProblem({ line: 5 }, "Then"),
             `Feature: a feature file
-Scenario: a scenario
-  When a step
-  Then a step
-  And a step`,
+  Scenario: a scenario
+    When a step
+    Then a step
+    And a step`,
         ],
         [
             "without Rule: Scenario - But",
             `Feature: a feature file
-Scenario: a scenario
-  When a step
-  Then a step
-  But a step
-  But a step`,
-            generateProblem({ line: 6, column: 5 }, "But"),
+  Scenario: a scenario
+    When a step
+    Then a step
+    But a step
+    But a step`,
+            generateProblem({ line: 6 }, "But"),
             `Feature: a feature file
-Scenario: a scenario
-  When a step
-  Then a step
-  But a step
-  And a step`,
+  Scenario: a scenario
+    When a step
+    Then a step
+    But a step
+    And a step`,
         ],
         [
             "without Rule: Scenario Outline - Given",
             `Feature: a feature file
-Scenario Outline: a scenario outline
-  Given a step
-  Given a step`,
-            generateProblem({ line: 4, column: 5 }, "Given"),
+  Scenario Outline: a scenario outline
+    Given a step
+    Given a step`,
+            generateProblem({ line: 4 }, "Given"),
             `Feature: a feature file
-Scenario Outline: a scenario outline
-  Given a step
-  And a step`,
+  Scenario Outline: a scenario outline
+    Given a step
+    And a step`,
         ],
     ];
 }
