@@ -18,8 +18,7 @@ const mockProblem = [
 ];
 
 describe("class: Linter", () => {
-    afterEach(() => {
-        jest.clearAllMocks();
+    beforeEach(() => {
         jest.restoreAllMocks();
     });
     describe("method: lint", () => {
