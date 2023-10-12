@@ -4,23 +4,43 @@ GherLint, a tool for checking patterns on Gherkin files.
 
 ## Installation
 
-_[TBD]_
+Using npm:
+
+```bash
+npm install -D @gherlint/gherlint
+```
+
+Using yarn:
+
+```bash
+yarn add -D @gherlint/gherlint
+```
 
 ## Usage
 
 ```bash
-./bin/gherlint.js <path-to-feature-file>
+npx gherlint features/
 ```
 
 Apply fix with `--fix` option.
 
 ```bash
-./bin/gherlint.js --fix <path-to-feature-file>
+npx gherlint --fix features/
 ```
 
 ## Configuration
 
-_[TBD]_
+GherLint supports configuring rules and other options via a config file. We support the following config file formats:
+
+> NOTE: Priority is given to the config file in the following order:
+
+```
+.gherlintrc
+.gherlintrc.js
+.gherlintrc.json
+```
+
+See [Configuration](lib/config/gherlintrc.js) for defaults.
 
 ## Code of Conduct
 
