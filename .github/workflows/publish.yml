@@ -14,13 +14,16 @@ jobs:
             - name: checkout
               uses: actions/checkout@v3
 
-            - name: npm-publish
+            - name: setup-node
               uses: actions/setup-node@v3
               with:
-                  node-version: "14.x"
-                  registry-url: "https://registry.npmjs.org"
-                  scope: "@gherlint"
+                  node-version: 14
+                  registry-url: https://registry.npmjs.org
+                  cache: yarn
+            - run: yarn install --immutable
+            - name: publish
+              run: |
+                  echo "npmAuthToken: ${NODE_AUTH_TOKEN}" >>  ~/.yarnrc.yml
+                  yarn npm publish --access public
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
-            - run: yarn
-            - run: yarn publish
