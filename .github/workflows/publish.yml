@@ -6,7 +6,7 @@ on:
 
 jobs:
     tests:
-        uses: ./.github/ci.yml
+        uses: ./.github/workflows/ci.yml
     publish:
         needs: [tests]
         runs-on: ubuntu-latest
