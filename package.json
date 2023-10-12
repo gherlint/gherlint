@@ -1,6 +1,6 @@
 {
     "name": "@gherlint/gherlint",
-    "version": "1.0.0-beta.1",
+    "version": "1.0.0-beta.2",
     "description": "A pattern checker for Gherkin language.",
     "bin": "./bin/gherlint.js",
     "main": "./lib/index.js",
