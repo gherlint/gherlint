@@ -22,4 +22,5 @@ jobs:
                   scope: "@gherlint"
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
-            - run: npm publish
+            - run: yarn
+            - run: yarn publish
