@@ -1,0 +1,6 @@
+.github
+.yarn
+.husky
+node_modules
+tests
+coverage

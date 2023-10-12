@@ -699,6 +699,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@gherlint/gherlint@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@gherlint/gherlint@workspace:."
+  dependencies:
+    "@commitlint/cli": ^17.7.1
+    "@commitlint/config-conventional": ^17.6.6
+    "@cucumber/gherkin": ^24.0.0
+    "@cucumber/messages": ^22.0.0
+    commander: ^9.1.0
+    eslint: ^8.50.0
+    eslint-plugin-jest: ^27.4.0
+    glob: ^7.2.0
+    husky: ^8.0.3
+    jest: ^28.1.2
+    lodash: ^4.17.21
+    memfs: ^4.3.0
+    minimatch: ^9.0.3
+    pinst: ^3.0.0
+    terminal-kit: ^3.0.0
+    unionfs: ^4.5.1
+  bin:
+    gherlint: ./bin/gherlint.js
+  languageName: unknown
+  linkType: soft
+
 "@humanwhocodes/config-array@npm:^0.11.11":
   version: 0.11.11
   resolution: "@humanwhocodes/config-array@npm:0.11.11"
@@ -2692,31 +2717,6 @@ __metadata:
   checksum: e04ecece32c92eebf5b8c940f51468cd53554dcbb0ea725b2748be583c9523d00128137966afce410b9b051eb2ef16d657cd2b120ca8edafcf5a65e81af63cad
   languageName: node
   linkType: hard
-
-"gherlint@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "gherlint@workspace:."
-  dependencies:
-    "@commitlint/cli": ^17.7.1
-    "@commitlint/config-conventional": ^17.6.6
-    "@cucumber/gherkin": ^24.0.0
-    "@cucumber/messages": ^22.0.0
-    commander: ^9.1.0
-    eslint: ^8.50.0
-    eslint-plugin-jest: ^27.4.0
-    glob: ^7.2.0
-    husky: ^8.0.3
-    jest: ^28.1.2
-    lodash: ^4.17.21
-    memfs: ^4.3.0
-    minimatch: ^9.0.3
-    pinst: ^3.0.0
-    terminal-kit: ^3.0.0
-    unionfs: ^4.5.1
-  bin:
-    gherlint: ./bin/gherlint.js
-  languageName: unknown
-  linkType: soft
 
 "git-raw-commits@npm:^2.0.11":
   version: 2.0.11
