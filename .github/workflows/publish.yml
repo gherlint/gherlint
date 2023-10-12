@@ -1,0 +1,22 @@
+name: publish
+
+on:
+    release:
+        types: [published]
+
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout
+              uses: actions/checkout@v3
+
+            - name: npm-publish
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "14.x"
+                  registry-url: "https://registry.npmjs.org"
+                  scope: "@gherlint"
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+              run: npm publish

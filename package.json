@@ -1,10 +1,10 @@
 {
-    "name": "gherlint",
+    "name": "@gherlint/gherlint",
     "version": "0.0.1",
     "description": "A pattern checker for Gherkin language.",
     "bin": "./bin/gherlint.js",
     "main": "./lib/index.js",
-    "author": "Sajan Gurung <me.sawjan@gmail.com>",
+    "author": "Sajan Gurung <sajan@jankaritech.com>",
     "license": "MIT",
     "repository": {
         "type": "git",
