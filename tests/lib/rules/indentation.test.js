@@ -7,7 +7,7 @@ const Indentation = require("../../../lib/rules/indentation");
 const parser = require("../../helpers/parser");
 
 const config = {
-    type: "warn",
+    type: "error",
     option: [2],
 };
 
