@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   GherLint CLI tool
--   First lint rule `indentation`
--   Add `--fix` cli option to fix lint errors (https://github.com/gherlint/gherlint/pull/31)
--   Add new lint rule `no_repetitive_step_keyword` (https://github.com/gherlint/gherlint/pull/52)
 -   Report invalid gherkin file as lint error (https://github.com/gherlint/gherlint/pull/63)
+-   New lint rule `no_repetitive_step_keyword` - checks repetitive use of step keywords (https://github.com/gherlint/gherlint/pull/52)
+-   gherlint command now supports `--fix` option to fix lint errors (https://github.com/gherlint/gherlint/pull/31)
+-   New lint rule `indentation` - checks indentation of gherkin files
+-   gherlint cli command
