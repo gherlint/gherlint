@@ -2,15 +2,24 @@ const { format } = require("util");
 const generator = require("../../../helpers/problemGenerator");
 const Indentation = require("../../../../lib/rules/indentation");
 
-function generateProblem(location, expectedIndent, actualIndent) {
+function getFixData(expectedIndent, content) {
+    const data = {
+        indent: " ".repeat(expectedIndent),
+    };
+    if (content) {
+        // eslint-disable-next-line quotes
+        data.ast = { content, delimiter: '"""' };
+    }
+    return data;
+}
+
+function generateProblem(location, expectedIndent, actualIndent, content) {
     return generator(
         Indentation,
         location,
         format(Indentation.meta.message, expectedIndent, actualIndent),
         {
-            fixData: {
-                indent: " ".repeat(expectedIndent),
-            },
+            fixData: getFixData(expectedIndent, content),
             applyFix: jest.fn(),
         }
     );
@@ -298,11 +307,16 @@ multiline text
         """`,
             [
                 // no indent
-                generateProblem({ line: 4, column: 1 }, 6, 0),
+                generateProblem({ line: 4, column: 1 }, 6, 0, "multiline text"),
                 // less indent
-                generateProblem({ line: 8, column: 5 }, 6, 4),
+                generateProblem({ line: 8, column: 5 }, 6, 4, "multiline text"),
                 // more indent
-                generateProblem({ line: 12, column: 9 }, 6, 8),
+                generateProblem(
+                    { line: 12, column: 9 },
+                    6,
+                    8,
+                    "multiline text"
+                ),
             ],
             `Feature: a feature file
   Scenario: a scenario
@@ -328,7 +342,7 @@ multiline text
       """
   multiline text
       """`,
-            [generateProblem({ line: 5, column: 3 }, 6, 2)],
+            [generateProblem({ line: 5, column: 3 }, 6, 2, "multiline text")],
             `Feature: a feature file
   Scenario: a scenario
     Given a step with docstring
@@ -345,7 +359,7 @@ multiline text
       """
       multiline text
     """`,
-            [generateProblem({ line: 6, column: 5 }, 6, 4)],
+            [generateProblem({ line: 6, column: 5 }, 6, 4, "multiline text")],
             `Feature: a feature file
   Scenario: a scenario
     Given a step with docstring
@@ -491,15 +505,22 @@ function getTestDataWithFix(multilineFix = false) {
     When a step
     """
 some text
-end
+    content
+          end
     """`,
-                generateProblem({ line: 4, column: 5 }, 6, 4),
+                generateProblem(
+                    { line: 4, column: 5 },
+                    6,
+                    4,
+                    "some text\ncontent\n      end"
+                ),
                 `Feature: a feature file
   Scenario: a scenario
     When a step
       """
       some text
-      end
+      content
+            end
       """`,
             ],
             [
@@ -508,19 +529,27 @@ end
   Scenario: a scenario
     When a step
 """
-some text
+    some text
+content
 end
             """`,
-                generateProblem({ line: 4, column: 1 }, 6, 0),
+                generateProblem(
+                    { line: 4, column: 1 },
+                    6,
+                    0,
+                    "    some text\ncontent\nend"
+                ),
                 `Feature: a feature file
   Scenario: a scenario
     When a step
       """
-      some text
+          some text
+      content
       end
       """`,
             ],
             // uncomment below test cases after the issue with docstring has been fixed
+            // Issue: https://github.com/gherlint/gherlint/issues/19
 
             //             [
             //                 "DocString (3)",
