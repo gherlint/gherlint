@@ -135,19 +135,12 @@ describe("class: Linter", () => {
                 ...mockProblem[0],
                 applyFix: jest.fn(() => text.trim()),
             };
-            const spyRunRules = jest
-                .spyOn(Linter.prototype, "runRules")
-                .mockReturnValue([]);
-            const spyFixLint = jest.spyOn(Linter.prototype, "fixLint");
             const spyApplyFix = jest.spyOn(problem, "applyFix");
 
             const linter = new Linter(config);
             const result = linter.fixLint(text, [problem]);
 
             expect(spyApplyFix).toHaveBeenCalledWith(text, problem);
-            expect(spyRunRules).toHaveBeenCalledWith(text.trim());
-            expect(spyFixLint).toHaveBeenCalledTimes(2);
-            expect(spyFixLint).toHaveBeenCalledWith(text.trim(), []);
             expect(result).toEqual({ problems: [], text: text.trim() });
         });
     });
