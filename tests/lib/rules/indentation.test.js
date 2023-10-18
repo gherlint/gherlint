@@ -35,7 +35,7 @@ describe("Indentation rule", () => {
 
     describe("invalid indentation", () => {
         const testData = getInvalidTestData().filter(
-            (test) => test[4] !== true
+            (test) => test[4] !== true // get test data except docstring
         );
 
         it.each(testData)("%s", (_, text, expectedProblems) => {
@@ -58,26 +58,65 @@ describe("Indentation rule", () => {
             });
         });
 
-        // TODO: need a fix
-        // docString indentation tests
-        describe("Failing", () => {
-            const failingTestData = getInvalidTestData().filter(
+        describe("DocString", () => {
+            const testData = getInvalidTestData().filter(
                 (test) => test[4] === true // get all docstring test data
             );
-            failingTestData.forEach((test) => {
-                it.failing(test[0], () => {
-                    const ast = parser.parse(test[1]);
-                    const problems = Indentation.run(ast, config);
+            testData.forEach((test, index) => {
+                // first test case passes
+                if (index === 0) {
+                    it(test[0], () => {
+                        const ast = parser.parse(test[1]);
+                        const problems = Indentation.run(ast, config);
 
-                    expect(problems.length).toEqual(test[2].length);
-                    problems.forEach((problem, index) => {
-                        expect(problem.location).toEqual(
-                            test[2][index].location
-                        );
-                        expect(problem.message).toEqual(test[2][index].message);
+                        expect(problems.length).toEqual(test[2].length);
+                        problems.forEach((problem, index) => {
+                            expect(problem.location).toEqual(
+                                test[2][index].location
+                            );
+                            expect(problem.message).toEqual(
+                                test[2][index].message
+                            );
+                            expect(problem.applyFix).toBeInstanceOf(Function);
+                            expect(problem.fixData.indent).toEqual(
+                                test[2][index].fixData.indent
+                            );
+                            expect(problem.fixData.ast).toHaveProperty(
+                                "content"
+                            );
+                            expect(problem.fixData.ast).toHaveProperty(
+                                "delimiter"
+                            );
+                        });
                     });
-                    expect(new Set(problems)).toEqual(new Set(test[2]));
-                });
+                } else {
+                    // TODO: after the issue is fixed, remove the if-block
+                    // https://github.com/gherlint/gherlint/issues/19
+                    it.failing(test[0], () => {
+                        const ast = parser.parse(test[1]);
+                        const problems = Indentation.run(ast, config);
+
+                        expect(problems.length).toEqual(test[2].length);
+                        problems.forEach((problem, index) => {
+                            expect(problem.location).toEqual(
+                                test[2][index].location
+                            );
+                            expect(problem.message).toEqual(
+                                test[2][index].message
+                            );
+                            expect(problem.applyFix).toBeInstanceOf(Function);
+                            expect(problem.fixData.indent).toEqual(
+                                test[2][index].fixData.indent
+                            );
+                            expect(problem.fixData.ast).toHaveProperty(
+                                "content"
+                            );
+                            expect(problem.fixData.ast).toHaveProperty(
+                                "delimiter"
+                            );
+                        });
+                    });
+                }
             });
         });
     });
