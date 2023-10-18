@@ -93,6 +93,23 @@ describe("class: Linter", () => {
                 expect(result.elapsedTime).toBeGreaterThanOrEqual(0);
                 expect(result).toHaveProperty("text");
             });
+            it("should not run fixLint if called as re-lint", () => {
+                const spyRunRules = jest
+                    .spyOn(Linter.prototype, "runRules")
+                    .mockReturnValue(mockProblem);
+                const spyFixLint = jest
+                    .spyOn(Linter.prototype, "fixLint")
+                    .mockReturnValue({
+                        problems: mockProblem,
+                        text: "",
+                    });
+
+                const linter = new Linter(configWithFix);
+                linter.lint("", true);
+
+                expect(spyRunRules).toHaveBeenCalledTimes(1);
+                expect(spyFixLint).not.toHaveBeenCalled();
+            });
         });
 
         describe("invalid gherkin file", () => {
@@ -131,24 +148,32 @@ describe("class: Linter", () => {
     describe("method: fixLint", () => {
         it("should return problems and text", () => {
             const text = " Feature: a feature";
-            const problem = {
+            const notFixableProblem = {
+                ...mockProblem[0],
+                applyFix: null,
+            };
+            const fixableProblem = {
                 ...mockProblem[0],
                 applyFix: jest.fn(() => text.trim()),
             };
-            const spyRunRules = jest
-                .spyOn(Linter.prototype, "runRules")
-                .mockReturnValue([]);
-            const spyFixLint = jest.spyOn(Linter.prototype, "fixLint");
-            const spyApplyFix = jest.spyOn(problem, "applyFix");
+            const problems = [
+                fixableProblem,
+                fixableProblem,
+                notFixableProblem,
+            ];
+            const spyApplyFix = jest.spyOn(fixableProblem, "applyFix");
 
             const linter = new Linter(config);
-            const result = linter.fixLint(text, [problem]);
+            const result = linter.fixLint(text, problems);
 
-            expect(spyApplyFix).toHaveBeenCalledWith(text, problem);
-            expect(spyRunRules).toHaveBeenCalledWith(text.trim());
-            expect(spyFixLint).toHaveBeenCalledTimes(2);
-            expect(spyFixLint).toHaveBeenCalledWith(text.trim(), []);
-            expect(result).toEqual({ problems: [], text: text.trim() });
+            expect(spyApplyFix).toHaveBeenCalledTimes(2);
+            expect(spyApplyFix).toHaveBeenCalledWith(text, fixableProblem);
+            expect(spyApplyFix).not.toHaveBeenCalledWith(
+                text,
+                notFixableProblem
+            );
+            expect(result.text).toEqual(text.trim());
+            expect(result.problems).toEqual([notFixableProblem]);
         });
     });
 
