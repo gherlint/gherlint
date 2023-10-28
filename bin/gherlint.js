@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+// init global configs
+require("../global/init");
+
 // main function
 (async function main() {
     const { Cli } = require("../lib/cli");
