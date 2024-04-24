@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+-   New lint rule `require_scenario` - enforces that a feature file has atleast one scenario (https://github.com/gherlint/gherlint/pull/87)
 -   New lint rule `no_trailing_whitespace` - checks trailing whitespaces (https://github.com/gherlint/gherlint/pull/86)
 -   New lint rule `require_step` - ensures that a Background or a Scenario has at least one step (https://github.com/gherlint/gherlint/pull/88)
 -   Show elapsed times for linting and command execution (https://github.com/gherlint/gherlint/pull/82)
