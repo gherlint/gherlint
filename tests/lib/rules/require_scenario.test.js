@@ -11,13 +11,15 @@ const config = {
 
 describe("require_scenario", () => {
     describe("invalid ast", () => {
-        it.each([[undefined], [null], [""], [{}]])(
-            "%s: should not show any lint problems",
-            (ast) => {
-                const problems = RequireScenario.run(ast);
-                expect(problems).toEqual([]);
-            }
-        );
+        it.each([
+            ["undefined", undefined],
+            ["null", null],
+            ["string", ""],
+            ["empty object", {}],
+        ])("%s: should not show any lint problems", (_, ast) => {
+            const problems = RequireScenario.run(ast);
+            expect(problems).toEqual([]);
+        });
     });
 
     describe("with a scenario", () => {
