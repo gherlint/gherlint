@@ -80,6 +80,13 @@ function getValidTestData() {
     Given a step`,
             [],
         ],
+        [
+            "with Rule: no scenarios",
+            `Feature: a feature file
+  Rule: a rule`,
+            [],
+        ],
+        ["without Rule: no scenarios", "Feature: a feature file", []],
     ];
 }
 
