@@ -11,6 +11,18 @@ const config = {
 };
 
 describe("no_trailing_whitespace", () => {
+    describe("invalid text property", () => {
+        it.each([
+            ["null", null],
+            ["undefined", undefined],
+            ["empty", ""],
+        ])("%s", (_, textValue) => {
+            const ast = { text: textValue };
+            const problems = NoTrailingWhitespace.run(ast, config);
+            expect(problems).toEqual([]);
+        });
+    });
+
     describe("no trailing whitespaces", () => {
         const testData = getValidTestData();
         it.each(testData)("%s", (_, text, expectedProblems) => {
