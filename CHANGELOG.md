@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+-   New lint rule `require_step` - ensures that a Background or a Scenario has at least one step (https://github.com/gherlint/gherlint/pull/88)
 -   Show elapsed times for linting and command execution (https://github.com/gherlint/gherlint/pull/82)
 -   Successful linting now shows a success message (https://github.com/gherlint/gherlint/pull/81)
 -   Report invalid gherkin file as lint error (https://github.com/gherlint/gherlint/pull/63)
