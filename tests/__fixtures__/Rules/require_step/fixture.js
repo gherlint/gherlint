@@ -2,11 +2,11 @@ const { format } = require("util");
 const generator = require("../../../helpers/problemGenerator");
 const RequireStep = require("../../../../lib/rules/require_step");
 
-function generateProblem(location, stepKeyword) {
+function generateProblem(location, keyword) {
     return generator(
         RequireStep,
         location,
-        format(RequireStep.meta.message, stepKeyword)
+        format(RequireStep.meta.message, keyword)
     );
 }
 
