@@ -99,7 +99,7 @@ function getValidTestData() {
         [
             "with Rule: description - Scenario tags and comments",
             `Feature: a feature file
-  feture description here
+  feature description here
   Rule: a rule
     @tag1
 
@@ -111,7 +111,7 @@ function getValidTestData() {
         [
             "with multiple Rules: description - Scenario tags and comments",
             `Feature: a feature file
-  feture description here
+  feature description here
   Rule: a rule
     @tag1
 
@@ -203,7 +203,7 @@ function getValidTestData() {
         [
             "without Rule: description - Scenario tags and comments",
             `Feature: a feature file
-  feture description here
+  feature description here
   @tag1
 
   #comment line
@@ -214,7 +214,7 @@ function getValidTestData() {
         [
             "without Rule: Background - Scenario tags and comments",
             `Feature: a feature file
-  feture description here
+  feature description here
 
   Background: a background
     describe a background
@@ -374,7 +374,7 @@ function getInvalidTestData() {
         [
             "with Rule: description - Scenario tags and comments",
             `Feature: a feature file
-  feture description here
+  feature description here
   Rule: a rule
     @tag1
 
@@ -388,7 +388,7 @@ function getInvalidTestData() {
         [
             "with multiple Rules: description - Scenario tags and comments",
             `Feature: a feature file
-  feture description here
+  feature description here
   Rule: a rule
     @tag1
 
@@ -490,7 +490,7 @@ function getInvalidTestData() {
         [
             "without Rule: description - Scenario tags and comments",
             `Feature: a feature file
-  feture description here
+  feature description here
 
   @tag1
 
@@ -503,7 +503,7 @@ function getInvalidTestData() {
         [
             "without Rule: Background - Scenario tags and comments",
             `Feature: a feature file
-  feture description here
+  feature description here
 
   Background: a background
     describe a background
