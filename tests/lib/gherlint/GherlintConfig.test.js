@@ -337,7 +337,7 @@ describe("class: GherlintConfig", () => {
                 [
                     "rules config",
                     { rules: { indentation: ["error"] } },
-                    getUpdatedConfig("rules", { indentation: ["error", 2] }),
+                    getUpdatedConfig("rules", { indentation: ["error"] }),
                 ],
             ])("should merge config: %s", (_, userConfig, expectedConfig) => {
                 const config = new GherlintConfig({});

@@ -2,6 +2,7 @@ const {
     getValidTestData,
     getInvalidTestData,
     getTestDataWithFix,
+    generateProblem,
 } = require("../../__fixtures__/Rules/indentation/fixture");
 const Indentation = require("../../../lib/rules/indentation");
 const parser = require("../../helpers/parser");
@@ -16,7 +17,7 @@ describe("Indentation rule", () => {
         it.each([[undefined], [null], [""], [{}]])(
             "'%s': should return undefined",
             (ast) => {
-                const problems = Indentation.run(ast);
+                const problems = Indentation.run(ast, config);
                 expect(problems).toEqual([]);
             }
         );
@@ -127,7 +128,7 @@ describe("Indentation rule", () => {
         it.each(testData)(
             "apply fix: %s",
             (_, text, problem, expectedFixedText) => {
-                const rule = new Indentation();
+                const rule = new Indentation({}, config);
                 const fixedText = rule.fixSingleLine(text, problem);
 
                 expect(fixedText).toEqual(expectedFixedText);
@@ -141,11 +142,59 @@ describe("Indentation rule", () => {
         it.each(testData)(
             "apply fix: %s",
             (_, text, problem, expectedFixedText) => {
-                const rule = new Indentation();
+                const rule = new Indentation({}, config);
                 const fixedText = rule.fixMultiLine(text, problem);
 
                 expect(fixedText).toEqual(expectedFixedText);
             }
         );
+    });
+
+    describe("custom indentation requirement", () => {
+        const customConfig = {
+            type: "error",
+            option: [4],
+        };
+        it.each([
+            [
+                "less indentation",
+                "Feature: a feature\n  Scenario: a scenario",
+                [
+                    generateProblem(
+                        { line: 2, column: 3 },
+                        customConfig.option[0],
+                        2
+                    ),
+                ],
+            ],
+            [
+                "more indentation",
+                "Feature: a feature\n      Scenario: a scenario\n   Given a step",
+                [
+                    generateProblem(
+                        { line: 2, column: 7 },
+                        customConfig.option[0],
+                        6
+                    ),
+                    generateProblem(
+                        { line: 3, column: 4 },
+                        customConfig.option[0] * 2,
+                        3
+                    ),
+                ],
+            ],
+        ])("%s", (_, text, expectedProblems) => {
+            const ast = parser.parse(text);
+            const problems = Indentation.run(ast, customConfig);
+            expect(problems.length).toEqual(expectedProblems.length);
+            problems.forEach((problem, index) => {
+                expect(problem.location).toEqual(
+                    expectedProblems[index].location
+                );
+                expect(problem.message).toEqual(
+                    expectedProblems[index].message
+                );
+            });
+        });
     });
 });

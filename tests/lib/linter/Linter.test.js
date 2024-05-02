@@ -133,7 +133,7 @@ describe("class: Linter", () => {
         it("should run all rules", () => {
             const spyGetRuleConfig = jest
                 .spyOn(Linter.prototype, "getRuleConfig")
-                .mockReturnValue({});
+                .mockReturnValue({ type: "error", option: [] });
 
             const linter = new Linter(config);
             const problems = linter.runRules("");
