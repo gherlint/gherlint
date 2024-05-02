@@ -60,7 +60,7 @@ describe("newline_before_scenario", () => {
         };
         it.each([
             [
-                "required 2 newlines - less newlines",
+                "less newlines",
                 "Feature: a feature\n  Scenario: a scenario",
                 [
                     generateProblem(
@@ -71,7 +71,7 @@ describe("newline_before_scenario", () => {
                 ],
             ],
             [
-                "required 2 newlines - more newlines",
+                "more newlines",
                 "Feature: a feature\n\n\n\n  Scenario: a scenario",
                 [
                     generateProblem(
