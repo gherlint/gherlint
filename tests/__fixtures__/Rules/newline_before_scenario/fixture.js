@@ -2,11 +2,11 @@ const { format } = require("util");
 const generator = require("../../../helpers/problemGenerator");
 const NewlineBeforeScenario = require("../../../../lib/rules/newline_before_scenario");
 
-function generateProblem(location, actual) {
+function generateProblem(location, actual, expected = 1) {
     return generator(
         NewlineBeforeScenario,
         location,
-        format(NewlineBeforeScenario.meta.message, 1, actual)
+        format(NewlineBeforeScenario.meta.message, expected, actual)
     );
 }
 

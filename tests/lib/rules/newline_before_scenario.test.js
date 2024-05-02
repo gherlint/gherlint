@@ -2,6 +2,7 @@ const parser = require("../../helpers/parser");
 const {
     getValidTestData,
     getInvalidTestData,
+    generateProblem,
 } = require("../../__fixtures__/Rules/newline_before_scenario/fixture");
 const NewlineBeforeScenario = require("../../../lib/rules/newline_before_scenario");
 
@@ -40,6 +41,49 @@ describe("newline_before_scenario", () => {
         it.each(testData)("%s", (_, text, expectedProblems) => {
             const ast = parser.parse(text);
             const problems = NewlineBeforeScenario.run(ast, config);
+            expect(problems.length).toEqual(expectedProblems.length);
+            problems.forEach((problem, index) => {
+                expect(problem.location).toEqual(
+                    expectedProblems[index].location
+                );
+                expect(problem.message).toEqual(
+                    expectedProblems[index].message
+                );
+            });
+        });
+    });
+
+    describe("custom newline requirement", () => {
+        const customConfig = {
+            type: "error",
+            option: [2],
+        };
+        it.each([
+            [
+                "required 2 newlines - less newlines",
+                "Feature: a feature\n  Scenario: a scenario",
+                [
+                    generateProblem(
+                        { line: 2, column: 3 },
+                        0,
+                        customConfig.option[0]
+                    ),
+                ],
+            ],
+            [
+                "required 2 newlines - more newlines",
+                "Feature: a feature\n\n\n\n  Scenario: a scenario",
+                [
+                    generateProblem(
+                        { line: 5, column: 3 },
+                        3,
+                        customConfig.option[0]
+                    ),
+                ],
+            ],
+        ])("%s", (_, text, expectedProblems) => {
+            const ast = parser.parse(text);
+            const problems = NewlineBeforeScenario.run(ast, customConfig);
             expect(problems.length).toEqual(expectedProblems.length);
             problems.forEach((problem, index) => {
                 expect(problem.location).toEqual(
