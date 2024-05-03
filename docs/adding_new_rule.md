@@ -37,7 +37,7 @@ A rule has the following guidelines:
 
 -   **MUST** be a class
 -   **SHOULD** extend the `Rule` class
--   **MUST** implement a statc method called `run`
+-   **MUST** implement a static method called `run`
 
 ### Rule Metadata
 
