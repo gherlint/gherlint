@@ -253,7 +253,7 @@ function getValidTestData() {
             "Examples table",
             `Feature: a feature file
 
-  Scenario: a scenario
+  Scenario Outline: a scenario outline
     Given a step
   Examples:
       | row1 |
@@ -541,7 +541,7 @@ function getInvalidTestData() {
             "Examples table",
             `Feature: a feature file
 
-  Scenario: a scenario
+  Scenario Outline: a scenario outline
     Given a step
   Examples:
       | row1 |
