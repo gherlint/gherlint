@@ -34,7 +34,7 @@ function getInvalidTestData() {
             "with uppercase title on Background",
             `Feature: a feature file
   Rule: a rule
-    Background: A background`,
+    Background: a Background`,
             [generateProblem({ line: 3, column: 15 })],
         ],
         [
@@ -48,17 +48,18 @@ function getInvalidTestData() {
             "with uppercase title on Scenario Outline",
             `Feature: a feature file
   Rule: a rule
-    Scenario Outline: A scenario outline`,
+    Scenario Outline: A Scenario outline`,
             [generateProblem({ line: 3, column: 21 })],
         ],
         [
             "with uppercase title on all keywords",
-            `Feature: a feature file
+            `Feature: a Feature file
   Rule: A rule
     Background: A background
-    Scenario: A scenario
-    Scenario Outline: A scenario outline`,
+    Scenario: a Scenario
+    Scenario Outline: A scenario Outline`,
             [
+                generateProblem({ line: 1, column: 8 }),
                 generateProblem({ line: 2, column: 7 }),
                 generateProblem({ line: 3, column: 15 }),
                 generateProblem({ line: 4, column: 13 }),
@@ -67,13 +68,13 @@ function getInvalidTestData() {
         ],
         [
             "with uppercase title on Feature",
-            `Feature: A feature file
+            `Feature: A feature File
   Background: a background`,
             [generateProblem({ line: 1, column: 8 })],
         ],
         [
             "with uppercase title on Feature and Scenario",
-            `Feature: A feature file
+            `Feature: a Feature file
   Background: a background
   Scenario: A scenario`,
             [
@@ -88,7 +89,7 @@ function getInvalidTestDataWithFix() {
     return [
         [
             "with uppercase title on Feature",
-            `Feature: A feature file
+            `Feature: A Feature File
   Background: a background`,
             generateProblem({ line: 1, column: 8 }),
             `Feature: a feature file
@@ -107,7 +108,7 @@ function getInvalidTestDataWithFix() {
         [
             "with uppercase title on Background",
             `Feature: a feature file
-  Background: A background`,
+  Background: a Background`,
             generateProblem({ line: 2, column: 13 }),
             `Feature: a feature file
   Background: a background`,
@@ -126,7 +127,7 @@ function getInvalidTestDataWithFix() {
             "with uppercase title on Scenario Outline",
             `Feature: a feature file
   Rule: a rule
-    Scenario Outline: A scenario outline`,
+    Scenario Outline: a Scenario Outline`,
             generateProblem({ line: 3, column: 21 }),
             `Feature: a feature file
   Rule: a rule
