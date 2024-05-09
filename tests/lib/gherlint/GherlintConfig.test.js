@@ -103,11 +103,16 @@ describe("class: GherlintConfig", () => {
 
     describe("public methods", () => {
         describe("getConfigFilePath", () => {
-            let spySearchConfigFile;
+            let spySearchConfigFile, spyOnExit;
             beforeAll(() => {
                 spySearchConfigFile = jest
                     .spyOn(GherlintConfig.prototype, "searchConfigFile")
                     .mockReturnValue(null);
+                spyOnExit = jest
+                    .spyOn(process, "exit")
+                    .mockImplementation(() => {
+                        throw new Error("process.exit");
+                    });
             });
 
             afterAll(() => {
@@ -126,6 +131,49 @@ describe("class: GherlintConfig", () => {
                 config.getConfigFilePath();
 
                 expect(spySearchConfigFile).toHaveBeenCalledTimes(0);
+            });
+
+            describe("config override from cli", () => {
+                it("should return error if the config path doesn't exist", () => {
+                    const config = new GherlintConfig({
+                        config: "custom/.gherlintrc",
+                    });
+
+                    expect(() => config.getConfigFilePath()).toThrow();
+                    expect(spyOnExit).toHaveBeenCalledWith(1);
+                    expect(spySearchConfigFile).toHaveBeenCalledTimes(0);
+                });
+                it("should return error if the path is a directory", () => {
+                    const vfs = createVfs({ "custom/.gherlintrc": "{}" });
+                    fs.use(vfs);
+
+                    const config = new GherlintConfig({
+                        config: `${tmpCwd}/custom`,
+                    });
+
+                    expect(() => config.getConfigFilePath()).toThrow();
+                    expect(spyOnExit).toHaveBeenCalledWith(1);
+                    expect(spySearchConfigFile).toHaveBeenCalledTimes(0);
+
+                    // reset vfs
+                    vfs.reset();
+                });
+                it("should return the config provided in cli option", () => {
+                    const vfs = createVfs({ ".gherlintrc": "{}" });
+                    fs.use(vfs);
+
+                    const config = new GherlintConfig({
+                        config: `${tmpCwd}/.gherlintrc`,
+                    });
+
+                    expect(config.getConfigFilePath()).toStrictEqual(
+                        `${tmpCwd}/.gherlintrc`
+                    );
+                    expect(spySearchConfigFile).toHaveBeenCalledTimes(0);
+
+                    // reset vfs
+                    vfs.reset();
+                });
             });
         });
 
