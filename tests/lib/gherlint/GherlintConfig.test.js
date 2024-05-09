@@ -7,6 +7,11 @@ const fixturesPath = path.resolve(
 );
 
 // mock modules
+jest.mock("../../../lib/logging/logger", () => {
+    const logger = jest.requireActual("../../../lib/logging/logger");
+    logger.log = (msg) => msg;
+    return logger;
+});
 jest.mock("fs", () => {
     const fs = jest.requireActual("fs");
     const { ufs } = require("unionfs");
@@ -17,12 +22,23 @@ process.cwd = () => tmpCwd;
 const fs = require("fs");
 const { Volume } = require("memfs");
 const GherlintConfig = require("../../../lib/gherlint/GherlintConfig");
+const logger = require("../../../lib/logging/logger");
 const {
     gherlintrc: defaultConfig,
     configFilePattern,
 } = require("../../../lib/config");
 
 describe("class: GherlintConfig", () => {
+    let spyLog;
+
+    beforeEach(() => {
+        spyLog = jest.spyOn(logger, "log");
+    });
+
+    afterEach(() => {
+        spyLog.mockClear();
+    });
+
     describe("init config", () => {
         let spyGetConfigFilePath,
             spyReadConfigFromFile,
@@ -135,13 +151,18 @@ describe("class: GherlintConfig", () => {
 
             describe("config override from cli", () => {
                 it("should return error if the config path doesn't exist", () => {
+                    const configPath = "custom/.gherlintrc";
                     const config = new GherlintConfig({
-                        config: "custom/.gherlintrc",
+                        config: configPath,
                     });
 
                     expect(() => config.getConfigFilePath()).toThrow();
                     expect(spyOnExit).toHaveBeenCalledWith(1);
                     expect(spySearchConfigFile).toHaveBeenCalledTimes(0);
+                    expect(spyLog).toHaveBeenCalledTimes(1);
+                    expect(spyLog).toHaveReturnedWith([
+                        `ENOENT: no such file or directory, stat '${configPath}'`,
+                    ]);
                 });
                 it("should return error if the path is a directory", () => {
                     const vfs = createVfs({ "custom/.gherlintrc": "{}" });
@@ -154,6 +175,12 @@ describe("class: GherlintConfig", () => {
                     expect(() => config.getConfigFilePath()).toThrow();
                     expect(spyOnExit).toHaveBeenCalledWith(1);
                     expect(spySearchConfigFile).toHaveBeenCalledTimes(0);
+                    expect(spyLog).toHaveBeenCalledTimes(1);
+                    expect(spyLog).toHaveReturnedWith([
+                        "'-c, --config' option takes file only.",
+                        "Usage:",
+                        "gherlint -c path/to/.gherlintrc",
+                    ]);
 
                     // reset vfs
                     vfs.reset();
@@ -291,6 +318,11 @@ describe("class: GherlintConfig", () => {
                         config.readConfigFromFile(`${tmpCwd}/${configFile}`)
                     ).toThrow();
                     expect(spyOnExit).toHaveBeenCalledWith(1);
+                    expect(spyLog).toHaveBeenCalledTimes(1);
+                    expect(spyLog).toHaveReturnedWith([
+                        "Invalid config file!",
+                        ".gherlintrc: Unexpected token i in JSON at position 0",
+                    ]);
 
                     // reset vfs
                     vfs.reset();
@@ -424,31 +456,54 @@ describe("class: GherlintConfig", () => {
                 expect(config.validateConfig(userConfig)).toEqual(undefined);
             });
             it.each([
-                {
-                    file: ["/path/to/features"],
-                },
-                {
-                    files: {},
-                },
-                {
-                    unknownProp: {},
-                },
-                {
-                    rules: null,
-                },
-            ])("should complain if config is invalid", (userConfig) => {
-                const spyOnExit = jest
-                    .spyOn(process, "exit")
-                    .mockImplementation(() => {
-                        throw new Error("process.exit");
-                    });
+                [
+                    {
+                        file: ["/path/to/features"],
+                    },
+                    ["[.gherlintrc] Invalid config properties!", "file"],
+                ],
+                [
+                    {
+                        files: {},
+                    },
+                    [
+                        "[.gherlintrc] Invalid config value. Must of type 'array'",
+                        "files",
+                    ],
+                ],
+                [
+                    {
+                        unknownProp: {},
+                    },
+                    ["[.gherlintrc] Invalid config properties!", "unknownProp"],
+                ],
+                [
+                    {
+                        rules: null,
+                    },
+                    [
+                        "[.gherlintrc] Invalid config value. Must of type 'object'",
+                        "rules",
+                    ],
+                ],
+            ])(
+                "should complain if config is invalid",
+                (userConfig, errMessage) => {
+                    const spyOnExit = jest
+                        .spyOn(process, "exit")
+                        .mockImplementation(() => {
+                            throw new Error("process.exit");
+                        });
 
-                const config = new GherlintConfig({});
-                config.configFilePath = ".gherlintrc";
+                    const config = new GherlintConfig({});
+                    config.configFilePath = ".gherlintrc";
 
-                expect(() => config.validateConfig(userConfig)).toThrow();
-                expect(spyOnExit).toHaveBeenCalledTimes(1);
-            });
+                    expect(() => config.validateConfig(userConfig)).toThrow();
+                    expect(spyOnExit).toHaveBeenCalledTimes(1);
+                    expect(spyLog).toHaveBeenCalledTimes(1);
+                    expect(spyLog).toHaveReturnedWith(errMessage);
+                }
+            );
             it("should call validateRules", () => {
                 const spyValidateRules = jest
                     .spyOn(GherlintConfig.prototype, "validateRules")
@@ -487,19 +542,43 @@ describe("class: GherlintConfig", () => {
                 expect(config.validateRules(rules)).toEqual(undefined);
             });
             it.each([
-                {
-                    indentation: true,
-                },
-                {
-                    indentation: "info",
-                },
-                {
-                    indentation: ["extra"],
-                },
-                {
-                    indentation: ["warn", 2, "extra"],
-                },
-            ])("should complain if rules are invalid", (rules) => {
+                [
+                    {
+                        indentation: true,
+                    },
+                    [
+                        "Invalid rule value (expected String or Array)",
+                        "[RULE] indentation: true",
+                    ],
+                ],
+                [
+                    {
+                        indentation: "info",
+                    },
+                    [
+                        "[.gherlintrc] Invalid rule value!",
+                        "[RULE] indentation: info\n  Expected one of these: off, warn, error",
+                    ],
+                ],
+                [
+                    {
+                        indentation: ["extra"],
+                    },
+                    [
+                        "[.gherlintrc] Invalid rule value!",
+                        "[RULE] indentation: extra\n  Expected one of these: off, warn, error",
+                    ],
+                ],
+                [
+                    {
+                        indentation: ["warn", 2, "extra"],
+                    },
+                    [
+                        "[.gherlintrc] Invalid rule value (expected 2 elements, but got 3)",
+                        "[RULE] indentation: warn, 2, extra",
+                    ],
+                ],
+            ])("should complain if rules are invalid", (rules, errMessage) => {
                 const spyOnExit = jest
                     .spyOn(process, "exit")
                     .mockImplementation(() => {
@@ -511,6 +590,8 @@ describe("class: GherlintConfig", () => {
 
                 expect(() => config.validateRules(rules)).toThrow();
                 expect(spyOnExit).toHaveBeenCalledTimes(1);
+                expect(spyLog).toHaveBeenCalledTimes(1);
+                expect(spyLog).toHaveReturnedWith(errMessage);
             });
         });
 
