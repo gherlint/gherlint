@@ -211,9 +211,9 @@ describe("class: GherlintConfig", () => {
                 expect(config.searchConfigFile()).toEqual(null);
             });
             it.each([
-                [".gherlintrc", { ".gherlintrc": "{}" }],
-                [".gherlintrc.json", { ".gherlintrc.json": "{}" }],
-                [".gherlintrc.js", { ".gherlintrc.js": "{}" }],
+                [".gherlintrc", { ".gherlintrc": "{}" }, []],
+                [".gherlintrc.json", { ".gherlintrc.json": "{}" }, []],
+                [".gherlintrc.js", { ".gherlintrc.js": "{}" }, []],
                 [
                     ".gherlintrc",
                     {
@@ -221,6 +221,13 @@ describe("class: GherlintConfig", () => {
                         ".gherlintrc": "{}",
                         ".gherlintrc.js": "{}",
                     },
+                    [
+                        [
+                            "Found multiple config files:",
+                            "/myproject/.gherlintrc\n  /myproject/.gherlintrc.js\n  /myproject/.gherlintrc.json",
+                        ],
+                        ["Using config file '.gherlintrc'"],
+                    ],
                 ],
                 [
                     ".gherlintrc.js",
@@ -228,8 +235,15 @@ describe("class: GherlintConfig", () => {
                         ".gherlintrc.json": "{}",
                         ".gherlintrc.js": "{}",
                     },
+                    [
+                        [
+                            "Found multiple config files:",
+                            "/myproject/.gherlintrc.js\n  /myproject/.gherlintrc.json",
+                        ],
+                        ["Using config file '.gherlintrc.js'"],
+                    ],
                 ],
-            ])("%s config file", (expectedFile, vfsJson) => {
+            ])("%s config file", (expectedFile, vfsJson, logs) => {
                 const vfs = createVfs(vfsJson);
                 fs.use(vfs);
 
@@ -238,6 +252,14 @@ describe("class: GherlintConfig", () => {
                 expect(config.searchConfigFile()).toEqual(
                     `${tmpCwd}/${expectedFile}`
                 );
+
+                if (logs.length) {
+                    expect(spyLog).toHaveBeenCalledTimes(logs.length);
+                    expect(spyLog).toHaveNthReturnedWith(1, logs[0]);
+                    expect(spyLog).toHaveNthReturnedWith(2, logs[1]);
+                } else {
+                    expect(spyLog).toHaveBeenCalledTimes(0);
+                }
 
                 // reset vfs
                 vfs.reset();
@@ -627,6 +649,13 @@ describe("class: GherlintConfig", () => {
                 expect(
                     JSON.parse(fs.readFileSync(`${tmpCwd}/.gherlintrc`, "utf8"))
                 ).toEqual(defaultConfig);
+                expect(spyLog).toHaveBeenCalledTimes(2);
+                expect(spyLog).toHaveNthReturnedWith(1, [
+                    "Initializing config file...",
+                ]);
+                expect(spyLog).toHaveNthReturnedWith(2, [
+                    "Config file initialized!",
+                ]);
 
                 // reset vfs
                 vfs.reset();
