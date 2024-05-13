@@ -33,3 +33,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Installation on node version higher than 12 gives warning (https://github.com/gherlint/gherlint/pull/72)
 -   Rules that has `off` type also get reported (https://github.com/gherlint/gherlint/pull/96)
 -   NaN when indentation value is not provided (https://github.com/gherlint/gherlint/pull/98)
+-   `.gherlintrc.js` doesn't work from subfolder (https://github.com/gherlint/gherlint/pull/106)
