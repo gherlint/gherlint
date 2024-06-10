@@ -53,19 +53,62 @@ describe("newline_before_scenario", () => {
         });
     });
 
-    describe("custom newline requirement", () => {
+    describe("custom option: change newline requirement", () => {
         const customConfig = {
             type: "error",
             option: [2],
         };
         it.each([
             [
-                "less newlines",
+                "valid number of newlines",
+                "Feature: a feature\n\n\n  Scenario: a scenario",
+                [],
+            ],
+            [
+                "valid number of newlines with a tag",
+                "Feature: a feature\n\n\n  @tag\n  Scenario: a scenario",
+                [],
+            ],
+            [
+                "no newline",
                 "Feature: a feature\n  Scenario: a scenario",
                 [
                     generateProblem(
                         { line: 2, column: 3 },
                         0,
+                        customConfig.option[0]
+                    ),
+                ],
+            ],
+            [
+                "no newline with a tag",
+                "Feature: a feature\n  @tag\n  Scenario: a scenario",
+                [
+                    generateProblem(
+                        { line: 3, column: 3 },
+                        0,
+                        customConfig.option[0]
+                    ),
+                ],
+            ],
+            [
+                "less newlines with a tag",
+                "Feature: a feature\n\n  @tag\n  Scenario: a scenario",
+                [
+                    generateProblem(
+                        { line: 4, column: 3 },
+                        1,
+                        customConfig.option[0]
+                    ),
+                ],
+            ],
+            [
+                "less newlines",
+                "Feature: a feature\n\n  Scenario: a scenario",
+                [
+                    generateProblem(
+                        { line: 3, column: 3 },
+                        1,
                         customConfig.option[0]
                     ),
                 ],
@@ -78,6 +121,66 @@ describe("newline_before_scenario", () => {
                         { line: 5, column: 3 },
                         3,
                         customConfig.option[0]
+                    ),
+                ],
+            ],
+            [
+                "more newlines with a tag",
+                "Feature: a feature\n\n\n\n  @tag\n  Scenario: a scenario",
+                [
+                    generateProblem(
+                        { line: 6, column: 3 },
+                        3,
+                        customConfig.option[0]
+                    ),
+                ],
+            ],
+        ])("%s", (_, text, expectedProblems) => {
+            const ast = parser.parse(text);
+            const problems = NewlineBeforeScenario.run(ast, customConfig);
+            expect(problems.length).toEqual(expectedProblems.length);
+            problems.forEach((problem, index) => {
+                expect(problem.location).toEqual(
+                    expectedProblems[index].location
+                );
+                expect(problem.message).toEqual(
+                    expectedProblems[index].message
+                );
+            });
+        });
+    });
+
+    describe("custom option: count tag and comment as newline", () => {
+        const customConfig = {
+            type: "error",
+            option: [2, true],
+        };
+        it.each([
+            [
+                "valid number of new lines",
+                "Feature: a feature\n\n  @tag\n  Scenario: a scenario",
+                [],
+            ],
+            [
+                "no newline",
+                "Feature: a feature\n  @tag\n  Scenario: a scenario",
+                [
+                    generateProblem(
+                        { line: 3, column: 3 },
+                        0,
+                        customConfig.option[0]
+                    ),
+                ],
+            ],
+            [
+                "more newlines",
+                "Feature: a feature\n\n\n\n  @tag\n  Scenario: a scenario",
+                [
+                    generateProblem(
+                        { line: 6, column: 3 },
+                        3,
+                        customConfig.option[0],
+                        "Expected 1 newline(s) before Scenario but found 3 (including tags and comments)"
                     ),
                 ],
             ],

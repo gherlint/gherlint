@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+-   New option for `newline_before_scenario` rule to allow counting tags and comments as a new line (https://github.com/gherlint/gherlint/pull/114)
+    ```js
+    newline_before_scenario: ["error", 2, true];
+    ```
+-   New lint rule:
+    -   `no_but_in_given_when` - checks that But is not used in Given or When steps (https://github.com/gherlint/gherlint/pull/111)
+        ```js
+        no_but_in_given_when: ["warn"];
+        ```
+
 ### Fixed
 
 ## [1.0.0] - 2024-05-13

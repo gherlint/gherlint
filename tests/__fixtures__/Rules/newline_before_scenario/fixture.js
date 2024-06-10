@@ -2,12 +2,14 @@ const { format } = require("util");
 const generator = require("../../../helpers/problemGenerator");
 const NewlineBeforeScenario = require("../../../../lib/rules/newline_before_scenario");
 
-function generateProblem(location, actual, expected = 1) {
-    return generator(
-        NewlineBeforeScenario,
-        location,
-        format(NewlineBeforeScenario.meta.message, expected, actual)
-    );
+function generateProblem(location, actual, expected = 1, message = "") {
+    if (!message) {
+        message = format(NewlineBeforeScenario.meta.message, expected, actual);
+    }
+    if (actual === 0) {
+        message = "Expected at least 1 newline before Scenario";
+    }
+    return generator(NewlineBeforeScenario, location, message);
 }
 
 function getValidTestData() {
