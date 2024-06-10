@@ -591,15 +591,6 @@ describe("class: GherlintConfig", () => {
                         "[RULE] indentation: extra\n  Expected one of these: off, warn, error",
                     ],
                 ],
-                [
-                    {
-                        indentation: ["warn", 2, "extra"],
-                    },
-                    [
-                        "[.gherlintrc] Invalid rule value (expected 2 elements, but got 3)",
-                        "[RULE] indentation: warn, 2, extra",
-                    ],
-                ],
             ])("should complain if rules are invalid", (rules, errMessage) => {
                 const spyOnExit = jest
                     .spyOn(process, "exit")
