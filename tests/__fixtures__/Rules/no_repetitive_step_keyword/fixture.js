@@ -77,7 +77,7 @@ function getValidTestData() {
             [],
         ],
         [
-            "Multiple inconsecutive But",
+            "Multiple nonconsecutive But",
             `Feature: a feature file
   Background: a background
     When a step
@@ -225,7 +225,7 @@ function getInvalidTestDataWithFix() {
     And a step`,
         ],
         [
-            "without Rule: consecutive repetative But",
+            "without Rule: consecutive repetitive But",
             `Feature: a feature file
 Scenario: a scenario
   Then a step

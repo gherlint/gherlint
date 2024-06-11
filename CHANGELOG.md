@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
--   Allow more than one inconsecutive But in Then section of a Scenario (https://github.com/gherlint/gherlint/pull/115)
+-   Allow more than one nonconsecutive But in Then section of a Scenario (https://github.com/gherlint/gherlint/pull/115)
 
 ### Fixed
 
