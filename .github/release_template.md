@@ -37,3 +37,4 @@
     -   `CHANGELOG.md`
 -   [ ] create release tag `v1.0.0`
     -   [ ] successful CI run
+-   [ ] published version is updated and correct in the [npm registry](https://www.npmjs.com/package/@gherlint/gherlint)
