@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Fix whitespaces reported in DocStrings (https://github.com/gherlint/gherlint/pull/116)
+
 ## [1.0.0] - 2024-05-13
 
 ### Added
