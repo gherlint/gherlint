@@ -76,6 +76,19 @@ function getValidTestData() {
     * a step`,
             [],
         ],
+        [
+            "Multiple inconsecutive But",
+            `Feature: a feature file
+  Background: a background
+    When a step
+    Then a step
+    But a step
+    And a step
+    But a step
+    And a step
+    But a step`,
+            [],
+        ],
     ];
 }
 function getInvalidTestData() {
@@ -108,6 +121,8 @@ function getInvalidTestData() {
     Then a step
     But a step
     But a step
+    And a step
+    But a step
   Scenario Outline: a scenario outline
     When a step
     When a step
@@ -120,8 +135,8 @@ function getInvalidTestData() {
                 generateProblem({ line: 4, column: 5 }, "Given"),
                 generateProblem({ line: 8, column: 5 }, "Then"),
                 generateProblem({ line: 10, column: 5 }, "But"),
-                generateProblem({ line: 13, column: 5 }, "When"),
-                generateProblem({ line: 14, column: 5 }, "When"),
+                generateProblem({ line: 15, column: 5 }, "When"),
+                generateProblem({ line: 16, column: 5 }, "When"),
             ],
         ],
     ];
@@ -208,6 +223,24 @@ function getInvalidTestDataWithFix() {
   Scenario Outline: a scenario outline
     Given a step
     And a step`,
+        ],
+        [
+            "without Rule: consecutive repetative But",
+            `Feature: a feature file
+Scenario: a scenario
+  Then a step
+  But a step
+  But a step
+  And a step
+  But a step`,
+            generateProblem({ line: 5 }, "But"),
+            `Feature: a feature file
+Scenario: a scenario
+  Then a step
+  But a step
+  And a step
+  And a step
+  But a step`,
         ],
     ];
 }
