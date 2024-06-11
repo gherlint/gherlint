@@ -26,6 +26,23 @@ function getValidTestData() {
 `,
             [],
         ],
+        [
+            "white spaces in docstring should be ignored",
+            `Feature: a feature file
+  Scenario: a scenario
+    When a step
+      """
+      lorem
+        start with spaces
+      some with spaces at the end      
+
+
+        end with spaces
+        
+      """
+`,
+            [],
+        ],
     ];
 }
 function getInvalidTestData() {
