@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         no_but_in_given_when: ["warn"];
         ```
 
+### Changed
+
+-   Allow more than one inconsecutive But in Then section of a Scenario (https://github.com/gherlint/gherlint/pull/115)
+
 ### Fixed
 
 ## [1.0.0] - 2024-05-13
