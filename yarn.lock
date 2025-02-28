@@ -686,7 +686,7 @@ __metadata:
     memfs: ^4.3.0
     minimatch: ^9.0.3
     pinst: ^3.0.0
-    terminal-kit: ^3.0.0
+    terminal-kit: 3.1.2
     unionfs: ^4.5.1
   bin:
     gherlint: ./bin/gherlint.js
@@ -5036,7 +5036,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terminal-kit@npm:^3.0.0":
+"terminal-kit@npm:3.1.2":
   version: 3.1.2
   resolution: "terminal-kit@npm:3.1.2"
   dependencies:
