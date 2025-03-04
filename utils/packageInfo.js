@@ -1,5 +1,4 @@
-const { resolve, join } = require("path");
-const packageInfo = require(join(resolve(__dirname), "..", "package.json"));
+const packageInfo = require("../package.json");
 
 module.exports = {
     getModuleName: () => packageInfo.name,
