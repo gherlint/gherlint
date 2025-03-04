@@ -17,6 +17,7 @@ export default [
                 __dirname: "readonly",
                 process: "readonly",
                 global: "readonly",
+                structuredClone: "off",
 
                 // Jest globals
                 afterAll: "readonly",
@@ -31,13 +32,14 @@ export default [
             },
         },
         plugins: {
-            jest,
+            jest, js
         },
         rules: {
             indent: ["error", 4, { SwitchCase: 1 }],
             "linebreak-style": ["error", "unix"],
             quotes: ["error", "double"],
             semi: ["error", "always"],
+            "constructor-super": "error",
         },
     },
 ];
