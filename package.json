@@ -45,8 +45,8 @@
     "devDependencies": {
         "@commitlint/cli": "^17.7.1",
         "@commitlint/config-conventional": "^17.6.6",
-        "eslint": "^8.50.0",
-        "eslint-plugin-jest": "^27.4.0",
+        "eslint": "^9.21.0",
+        "eslint-plugin-jest": "^28.11.0",
         "jest": "^28.1.2",
         "memfs": "^4.3.0",
         "pinst": "^3.0.0",
