@@ -1,11 +1,12 @@
+const { format } = require("util");
 const generator = require("../../../helpers/problemGenerator");
-const RequireWhenStep = require("../../../../lib/rules/require_when_step");
+const RequireWhenAndThenStep = require("../../../../lib/rules/require_when_and_then_step");
 
-function generateProblem(location) {
+function generateProblem(location, keyword) {
     return generator(
-        RequireWhenStep,
+        RequireWhenAndThenStep,
         location,
-        RequireWhenStep.meta.message
+        format(RequireWhenAndThenStep.meta.message, keyword)
     );
 }
 
@@ -62,7 +63,7 @@ function getInvalidTestData() {
       Given a step
       Then a step`,
             [
-                generateProblem({ line: 5, column: 7 }),
+                generateProblem({ line: 5, column: 7 }, "When")
             ],
         ],
         [
@@ -74,11 +75,36 @@ function getInvalidTestData() {
       Scenario: a scenario
         Then a step
       Scenario Outline: a scenario outline
-        Then a step`,
+        When a step`,
             [
-                generateProblem({ line: 6, column: 9 }),
-                generateProblem({ line: 8, column: 9 }),
+                generateProblem({ line: 6, column: 9 }, "When"),
+                generateProblem({ line: 9, column: 9 }, "Then")
             ],
+        ],
+        [
+          "with Rule: Background, Scenario and Scenario Outline",
+          `Feature: a feature file
+Rule: a rule
+  Background: a background
+    Given a step
+    Scenario: a scenario
+      When a step
+    Scenario Outline: a scenario outline
+      Then a step`,
+          [
+              generateProblem({ line: 7, column: 7 }, "Then"),
+              generateProblem({ line: 8, column: 7 }, "When")
+          ],
+        ],
+        [
+          "with Rule: Scenario but No background",
+          `Feature: a feature file
+Rule: a rule
+  Scenario: a scenario
+    Given a step`,
+          [
+              generateProblem({ line: 5, column: 5 }, "When and Then")
+          ],
         ],
     ];
 }
