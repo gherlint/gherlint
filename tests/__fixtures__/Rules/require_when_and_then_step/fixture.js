@@ -78,12 +78,12 @@ function getInvalidTestData() {
         When a step`,
             [
                 generateProblem({ line: 6, column: 9 }, "When"),
-                generateProblem({ line: 9, column: 9 }, "Then")
+                generateProblem({ line: 8, column: 9 }, "Then")
             ],
         ],
         [
-          "with Rule: Background, Scenario and Scenario Outline",
-          `Feature: a feature file
+            "with Rule: Background, Scenario and Scenario Outline",
+            `Feature: a feature file
 Rule: a rule
   Background: a background
     Given a step
@@ -91,20 +91,20 @@ Rule: a rule
       When a step
     Scenario Outline: a scenario outline
       Then a step`,
-          [
-              generateProblem({ line: 7, column: 7 }, "Then"),
-              generateProblem({ line: 8, column: 7 }, "When")
-          ],
+            [
+                generateProblem({ line: 6, column: 7 }, "Then"),
+                generateProblem({ line: 8, column: 7 }, "When")
+            ],
         ],
         [
-          "with Rule: Scenario but No background",
-          `Feature: a feature file
+            "with Rule: Scenario but No background",
+            `Feature: a feature file
 Rule: a rule
   Scenario: a scenario
     Given a step`,
-          [
-              generateProblem({ line: 5, column: 5 }, "When and Then")
-          ],
+            [
+                generateProblem({ line: 4, column: 5 }, "When and Then")
+            ],
         ],
     ];
 }
