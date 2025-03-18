@@ -6,7 +6,7 @@ const {
 const RequireWhenAndThenStep = require("../../../lib/rules/require_when_and_then_step");
 
 const config = {
-    type: "error",
+    type: "warn",
 };
 
 describe("require_when_and_then_step", () => {
