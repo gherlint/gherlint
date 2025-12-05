@@ -31,13 +31,11 @@ function getValidTestData() {
 function getInvalidTestData() {
     return [
         [
-            "Comma mistakes scenario description",
-            `Feature: mistake,in features,description
-  Rule: a rule
-    Background: a Background`,
+            "mistakes in scenario description",
+            "Feature: mistake,in features, descripton",
             [
-                generateProblem({ line: 1, column: 7 }, "Use a space after a comma."),
-                generateProblem({ line: 1, column: 19 }, "Use a space after a comma."),
+                generateProblem({ line: 1, column: 7 }, "Use a space after a comma. Suggestions: Replace with ' '"),
+                generateProblem({ line: 1, column: 21 }, "Did you mean to spell `descripton` this way? Suggestions: Replace with 'description' OR Replace with 'descriptor' OR Replace with 'descriptions'"),
             ],
         ],
         //       [

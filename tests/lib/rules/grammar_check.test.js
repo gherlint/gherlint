@@ -46,11 +46,6 @@ describe("Grammar rule", () => {
                 expect(problem.message).toEqual(
                     expectedProblems[index].message
                 );
-
-                // expect(problem.applyFix).toBeInstanceOf(Function);
-                // expect(problem.fixData).toMatchObject(
-                //     expectedProblems[index].fixData
-                // );
             });
         });
 
