@@ -717,6 +717,7 @@ __metadata:
     eslint: ^9.21.0
     eslint-plugin-jest: ^28.11.0
     glob: ^7.2.0
+    harper.js: ^1.1.0
     husky: ^8.0.3
     jest: ^28.1.2
     lodash: ^4.17.21
@@ -2713,6 +2714,13 @@ __metadata:
   version: 2.1.0
   resolution: "hard-rejection@npm:2.1.0"
   checksum: 7baaf80a0c7fff4ca79687b4060113f1529589852152fa935e6787a2bc96211e784ad4588fb3048136ff8ffc9dfcf3ae385314a5b24db32de20bea0d1597f9dc
+  languageName: node
+  linkType: hard
+
+"harper.js@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "harper.js@npm:1.1.0"
+  checksum: 08da01f3b8eda87309e3c19855353b7bf8a2a4f8727457530e7a534972274f4f2ad3c930e0b14825164f83e8b35fd0fd2bb6c3bc1502a242d692e508611fd1b0
   languageName: node
   linkType: hard
 

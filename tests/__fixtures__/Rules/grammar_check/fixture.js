@@ -1,0 +1,128 @@
+const generator = require("../../../helpers/problemGenerator");
+const GrammarCheck = require("../../../../lib/rules/grammar_check");
+
+function generateProblem(location, message) {
+    return generator(GrammarCheck, location, message, {
+        applyFix: jest.fn(),
+    });
+}
+
+function getValidTestData() {
+    return [
+        [
+            "Feature - Rule - Background - Scenario - Scenario Outline",
+            `Feature: a feature file
+  Rule: a rule
+    Background: a background
+    Scenario: a scenario
+    Scenario Outline: a scenario`,
+            [],
+        ],
+        [
+            "Feature - Rule - Scenario",
+            `Feature: a feature file
+  Rule: a rule
+    Scenario: a scenario`,
+            [],
+        ],
+    ];
+}
+
+function getInvalidTestData() {
+    return [
+        [
+            "mistakes in feature name",
+            "Feature: mistake,in featuere name",
+            [
+                generateProblem(
+                    { line: 1, column: 7 },
+                    "Use a space after a comma. Suggestions: Replace with ' '"
+                ),
+                generateProblem(
+                    { line: 1, column: 11 },
+                    "Did you mean to spell `featuere` this way?" +
+                    " Suggestions: Replace with 'feature' OR Replace with 'feather' OR Replace with 'feathered'"
+                ),
+            ],
+        ],
+        [
+            "mistakes in feature description",
+            `Feature: the name is correct,
+    but the user, make misstake,
+ in descr,iption`,
+            [
+                generateProblem(
+                    { line: 1, column: 19 },
+                    "Did you mean to spell `misstake` this way?" +
+                    " Suggestions: Replace with 'mistake' OR Replace with 'misstate' OR Replace with 'mistaken'"
+                ),
+                generateProblem(
+                    { line: 1, column: 3 },
+                    "Did you mean to spell `descr` this way?" +
+                    " Suggestions: Replace with 'descry' OR Replace with 'dear' OR Replace with 'debar'"
+                ),
+                generateProblem(
+                    { line: 1, column: 8 },
+                    "Use a space after a comma. Suggestions: Replace with ' '"
+                ),
+                generateProblem(
+                    { line: 1, column: 9 },
+                    "Did you mean to spell `iption` this way?" +
+                    " Suggestions: Replace with 'option' OR Replace with 'action' OR Replace with 'caption'"
+                ),
+            ],
+        ],
+        //       [
+        //           "with uppercase title on Scenario",
+        //           `Feature: a feature file
+        // Rule: a rule
+        //   Scenario: A scenario`,
+        //           [generateProblem({ line: 3, column: 13 })],
+        //       ],
+        //       [
+        //           "with uppercase title on Scenario Outline",
+        //           `Feature: a feature file
+        // Rule: a rule
+        //   Scenario Outline: A Scenario outline`,
+        //           [generateProblem({ line: 3, column: 21 })],
+        //       ],
+        //       [
+        //           "with uppercase title on all keywords",
+        //           `Feature: a Feature file
+        // Rule: A rule
+        //   Background: A background
+        //   Scenario: a Scenario
+        //   Scenario Outline: A scenario Outline`,
+        //           [
+        //               generateProblem({ line: 1, column: 8 }),
+        //               generateProblem({ line: 2, column: 7 }),
+        //               generateProblem({ line: 3, column: 15 }),
+        //               generateProblem({ line: 4, column: 13 }),
+        //               generateProblem({ line: 5, column: 21 }),
+        //           ],
+        //       ],
+        //       [
+        //           "with uppercase title on Feature",
+        //           `Feature: A feature File
+        // Background: a background`,
+        //           [generateProblem({ line: 1, column: 8 })],
+        //       ],
+        //       [
+        //           "with uppercase title on Feature and Scenario",
+        //           `Feature: a Feature file
+        // Background: a background
+        // Scenario: A scenario`,
+        //           [
+        //               generateProblem({ line: 1, column: 8 }),
+        //               generateProblem({ line: 3, column: 11 }),
+        //           ],
+        //       ],
+    ];
+}
+
+
+module.exports = {
+    generateProblem,
+    getValidTestData,
+    getInvalidTestData,
+};
