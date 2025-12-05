@@ -1,8 +1,8 @@
 const generator = require("../../../helpers/problemGenerator");
 const GrammarCheck = require("../../../../lib/rules/grammar_check");
 
-function generateProblem(location) {
-    return generator(GrammarCheck, location, GrammarCheck.meta.message, {
+function generateProblem(location, message) {
+    return generator(GrammarCheck, location, message, {
         applyFix: jest.fn(),
     });
 }
@@ -31,11 +31,14 @@ function getValidTestData() {
 function getInvalidTestData() {
     return [
         [
-            "with uppercase title on Background",
+            "Comma mistakes scenario description",
             `Feature: mistake,in features,description
   Rule: a rule
     Background: a Background`,
-            [generateProblem({ line: 3, column: 15 })],
+            [
+                generateProblem({ line: 1, column: 7 }, "Use a space after a comma."),
+                generateProblem({ line: 1, column: 19 }, "Use a space after a comma."),
+            ],
         ],
         //       [
         //           "with uppercase title on Scenario",
