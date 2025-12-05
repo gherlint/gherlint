@@ -31,11 +31,45 @@ function getValidTestData() {
 function getInvalidTestData() {
     return [
         [
-            "mistakes in scenario description",
-            "Feature: mistake,in features, descripton",
+            "mistakes in feature name",
+            "Feature: mistake,in featuere name",
             [
-                generateProblem({ line: 1, column: 7 }, "Use a space after a comma. Suggestions: Replace with ' '"),
-                generateProblem({ line: 1, column: 21 }, "Did you mean to spell `descripton` this way? Suggestions: Replace with 'description' OR Replace with 'descriptor' OR Replace with 'descriptions'"),
+                generateProblem(
+                    { line: 1, column: 7 },
+                    "Use a space after a comma. Suggestions: Replace with ' '"
+                ),
+                generateProblem(
+                    { line: 1, column: 11 },
+                    "Did you mean to spell `featuere` this way?" +
+                    " Suggestions: Replace with 'feature' OR Replace with 'feather' OR Replace with 'feathered'"
+                ),
+            ],
+        ],
+        [
+            "mistakes in feature description",
+            `Feature: the name is correct,
+    but the user, make misstake,
+ in descr,iption`,
+            [
+                generateProblem(
+                    { line: 1, column: 19 },
+                    "Did you mean to spell `misstake` this way?" +
+                    " Suggestions: Replace with 'mistake' OR Replace with 'misstate' OR Replace with 'mistaken'"
+                ),
+                generateProblem(
+                    { line: 1, column: 3 },
+                    "Did you mean to spell `descr` this way?" +
+                    " Suggestions: Replace with 'descry' OR Replace with 'dear' OR Replace with 'debar'"
+                ),
+                generateProblem(
+                    { line: 1, column: 8 },
+                    "Use a space after a comma. Suggestions: Replace with ' '"
+                ),
+                generateProblem(
+                    { line: 1, column: 9 },
+                    "Did you mean to spell `iption` this way?" +
+                    " Suggestions: Replace with 'option' OR Replace with 'action' OR Replace with 'caption'"
+                ),
             ],
         ],
         //       [
