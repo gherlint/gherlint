@@ -31,6 +31,25 @@ Once the rule is created, it needs to be registered to the list of rules in the 
 }
 ```
 
+and in `lib/config/gherlintrc.js`
+```js
+module.exports = {
+    ...
+    /**
+     * Linting rules
+     *
+     * labels:
+     * - error
+     * - warn
+     * - off
+     */
+    rules: {
+        ...
+        my_new_rule: "warn",
+    },
+};
+```
+
 ## Writing a Rule
 
 A rule has the following guidelines:
