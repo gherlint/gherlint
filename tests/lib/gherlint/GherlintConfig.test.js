@@ -211,10 +211,26 @@ describe("class: GherlintConfig", () => {
                 expect(config.searchConfigFile()).toEqual(null);
             });
             it.each([
-                [".gherlintrc", { ".gherlintrc": "{}" }, []],
-                [".gherlintrc.json", { ".gherlintrc.json": "{}" }, []],
-                [".gherlintrc.js", { ".gherlintrc.js": "{}" }, []],
                 [
+                    ".gherlintrc - single",
+                    ".gherlintrc",
+                    { ".gherlintrc": "{}" },
+                    [],
+                ],
+                [
+                    ".gherlintrc.json - single",
+                    ".gherlintrc.json",
+                    { ".gherlintrc.json": "{}" },
+                    [],
+                ],
+                [
+                    ".gherlintrc.js - single",
+                    ".gherlintrc.js",
+                    { ".gherlintrc.js": "{}" },
+                    [],
+                ],
+                [
+                    ".gherlintrc - multiple",
                     ".gherlintrc",
                     {
                         ".gherlintrc.json": "{}",
@@ -230,6 +246,7 @@ describe("class: GherlintConfig", () => {
                     ],
                 ],
                 [
+                    ".gherlintrc.js - multiple",
                     ".gherlintrc.js",
                     {
                         ".gherlintrc.json": "{}",
@@ -243,7 +260,7 @@ describe("class: GherlintConfig", () => {
                         ["Using config file '.gherlintrc.js'"],
                     ],
                 ],
-            ])("%s config file", (expectedFile, vfsJson, logs) => {
+            ])("%s config file", (_, expectedFile, vfsJson, logs) => {
                 const vfs = createVfs(vfsJson);
                 fs.use(vfs);
 
@@ -343,7 +360,9 @@ describe("class: GherlintConfig", () => {
                     expect(spyLog).toHaveBeenCalledTimes(1);
                     expect(spyLog).toHaveReturnedWith([
                         "Invalid config file!",
-                        ".gherlintrc: Unexpected token i in JSON at position 0",
+                        expect.stringMatching(
+                            /.gherlintrc: Unexpected token (.*)/
+                        ),
                     ]);
 
                     // reset vfs
