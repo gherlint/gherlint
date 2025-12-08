@@ -43,7 +43,7 @@
         "terminal-kit": "^3.0.0"
     },
     "devDependencies": {
-        "@commitlint/cli": "^17.7.1",
+        "@commitlint/cli": "^20.2.0",
         "@commitlint/config-conventional": "^17.6.6",
         "eslint": "^9.39.1",
         "eslint-plugin-jest": "^28.11.0",
