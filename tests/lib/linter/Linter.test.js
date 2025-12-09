@@ -23,26 +23,26 @@ describe("class: Linter", () => {
     });
     describe("method: lint", () => {
         describe("without fix option", () => {
-            it("should return an empty array if no lint issues", () => {
+            it("should return an empty array if no lint issues", async () => {
                 const spyRunRules = jest
                     .spyOn(Linter.prototype, "runRules")
                     .mockReturnValue([]);
 
                 const linter = new Linter(config);
-                const result = linter.lint("");
+                const result = await linter.lint("");
 
                 expect(spyRunRules).toHaveBeenCalledTimes(1);
                 expect(result.problems).toEqual([]);
                 expect(result.elapsedTime).toBeGreaterThanOrEqual(0);
                 expect(result).not.toHaveProperty("text");
             });
-            it("should return problems", () => {
+            it("should return problems", async () => {
                 const spyRunRules = jest
                     .spyOn(Linter.prototype, "runRules")
                     .mockReturnValue(mockProblem);
 
                 const linter = new Linter(config);
-                const result = linter.lint("");
+                const result = await linter.lint("");
 
                 expect(spyRunRules).toHaveBeenCalledTimes(1);
                 expect(result.problems).toEqual(mockProblem);
@@ -53,7 +53,7 @@ describe("class: Linter", () => {
         describe("with fix option", () => {
             const configWithFix = { ...config, fix: true };
 
-            it("should return an empty array if no lint issues", () => {
+            it("should return an empty array if no lint issues", async () => {
                 const spyRunRules = jest
                     .spyOn(Linter.prototype, "runRules")
                     .mockReturnValue([]);
@@ -65,7 +65,7 @@ describe("class: Linter", () => {
                     });
 
                 const linter = new Linter(configWithFix);
-                const result = linter.lint("");
+                const result = await linter.lint("");
 
                 expect(spyRunRules).toHaveBeenCalledTimes(1);
                 expect(spyFixLint).toHaveBeenCalledTimes(1);
@@ -73,7 +73,7 @@ describe("class: Linter", () => {
                 expect(result.elapsedTime).toBeGreaterThanOrEqual(0);
                 expect(result).toHaveProperty("text");
             });
-            it("should return problems", () => {
+            it("should return problems", async () => {
                 const spyRunRules = jest
                     .spyOn(Linter.prototype, "runRules")
                     .mockReturnValue(mockProblem);
@@ -85,7 +85,7 @@ describe("class: Linter", () => {
                     });
 
                 const linter = new Linter(configWithFix);
-                const result = linter.lint("");
+                const result = await linter.lint("");
 
                 expect(spyRunRules).toHaveBeenCalledTimes(1);
                 expect(spyFixLint).toHaveBeenCalledTimes(1);
@@ -93,7 +93,7 @@ describe("class: Linter", () => {
                 expect(result.elapsedTime).toBeGreaterThanOrEqual(0);
                 expect(result).toHaveProperty("text");
             });
-            it("should not run fixLint if called as re-lint", () => {
+            it("should not run fixLint if called as re-lint", async () => {
                 const spyRunRules = jest
                     .spyOn(Linter.prototype, "runRules")
                     .mockReturnValue(mockProblem);
@@ -105,7 +105,7 @@ describe("class: Linter", () => {
                     });
 
                 const linter = new Linter(configWithFix);
-                linter.lint("", true);
+                await linter.lint("", true);
 
                 expect(spyRunRules).toHaveBeenCalledTimes(1);
                 expect(spyFixLint).not.toHaveBeenCalled();
@@ -113,16 +113,16 @@ describe("class: Linter", () => {
         });
 
         describe("invalid gherkin file", () => {
-            it("should return a problem", () => {
+            it("should return a problem", async () => {
                 const linter = new Linter(config);
-                const result = linter.lint("Given a step");
+                const result = await linter.lint("Given a step");
 
                 expect(result.problems).toEqual([
                     {
                         ruleId: "parse-error",
                         type: "error",
                         message: "Invalid Gherkin syntax",
-                        location: { line: 1, column: 1 },
+                        location: {line: 1, column: 1},
                     },
                 ]);
             });
@@ -130,13 +130,13 @@ describe("class: Linter", () => {
     });
 
     describe("method: runRules", () => {
-        it("should run all rules", () => {
+        it("should run all rules", async () => {
             const spyGetRuleConfig = jest
                 .spyOn(Linter.prototype, "getRuleConfig")
-                .mockReturnValue({ type: "error", option: [] });
+                .mockReturnValue({type: "error", option: []});
 
             const linter = new Linter(config);
-            const problems = linter.runRules("");
+            const problems = await linter.runRules("");
 
             expect(spyGetRuleConfig).toHaveBeenCalledTimes(
                 Object.keys(Rules).length

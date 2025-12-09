@@ -21,12 +21,12 @@
         "bdd"
     ],
     "engines": {
-        "node": ">=12"
+        "node": ">=20"
     },
     "packageManager": "yarn@3.2.1",
     "scripts": {
         "lint": "eslint './**/*.js'",
-        "test:unit": "jest",
+        "test:unit": "yarn node --experimental-vm-modules $(yarn bin jest) --no-watchman",
         "commitlint": "commitlint",
         "postinstall": "husky install",
         "prepack": "pinst --disable",
@@ -37,6 +37,7 @@
         "@cucumber/messages": "^22.0.0",
         "commander": "^9.1.0",
         "glob": "^13.0.0",
+        "harper.js": "^1.1.0",
         "husky": "^8.0.3",
         "lodash": "^4.17.21",
         "minimatch": "^9.0.3",

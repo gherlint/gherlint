@@ -710,6 +710,7 @@ __metadata:
     eslint: ^9.39.1
     eslint-plugin-jest: ^29.2.1
     glob: ^13.0.0
+    harper.js: ^1.1.0
     husky: ^8.0.3
     jest: ^28.1.2
     lodash: ^4.17.21
@@ -2628,6 +2629,13 @@ __metadata:
   version: 4.2.11
   resolution: "graceful-fs@npm:4.2.11"
   checksum: ac85f94da92d8eb6b7f5a8b20ce65e43d66761c55ce85ac96df6865308390da45a8d3f0296dd3a663de65d30ba497bd46c696cc1e248c72b13d6d567138a4fc7
+  languageName: node
+  linkType: hard
+
+"harper.js@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "harper.js@npm:1.1.0"
+  checksum: 08da01f3b8eda87309e3c19855353b7bf8a2a4f8727457530e7a534972274f4f2ad3c930e0b14825164f83e8b35fd0fd2bb6c3bc1502a242d692e508611fd1b0
   languageName: node
   linkType: hard
 
