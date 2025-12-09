@@ -40,6 +40,24 @@ describe("Grammar rule", () => {
 
             expect(problems.length).toEqual(0);
         });
+        test("disable some rules but leave others active", async () => {
+            config = {
+                type: "error",
+                option: ["", [], {
+                    ExpandMinimum: false,
+                    CanBeSeen: false,
+                }],
+            };
+            const linter = new Linter();
+            const ast = linter.parseAst(
+                `Feature: it can be seem that 'min' is expanded
+This tool can be piggy bag`
+            );
+            const problems = await GrammarCheck.run(ast, config);
+
+            expect(problems.length).toEqual(1);
+            expect(problems[0].message).toBe("Did you mean `piggyback`? Suggestions: Replace with 'piggyback'");
+        });
     });
 
     describe("invalid ast", () => {
