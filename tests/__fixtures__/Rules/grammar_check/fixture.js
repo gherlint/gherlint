@@ -59,7 +59,8 @@ As a developer,
 I want my feature files to be grammatically correct
 So that it looks like I've paid attention in high school
 
-# but in these commen there are mustakes`,
+    # but in these commen there are mustakes
+    # also if there are multii line`,
             [
                 generateProblem(
                     {line: 1, column: "55-59"},
@@ -67,14 +68,19 @@ So that it looks like I've paid attention in high school
                     " Suggestions: Replace with 'file' OR Replace with 'flue' OR Replace with 'fuel'"
                 ),
                 generateProblem(
-                    {line: 7, column: "16-22"},
+                    {line: 7, column: "20-26"},
                     "Did you mean to spell `commen` this way?" +
                     " Suggestions: Replace with 'comment' OR Replace with 'common' OR Replace with 'commend'"
                 ),
                 generateProblem(
-                    {line: 7, column: "33-41"},
+                    {line: 7, column: "37-45"},
                     "Did you mean to spell `mustakes` this way?" +
                     " Suggestions: Replace with 'mistakes' OR Replace with 'mistake's' OR Replace with 'mistake'"
+                ),
+                generateProblem(
+                    {line: 8, column: "25-31"},
+                    "Did you mean to spell `multii` this way?" +
+                    " Suggestions: Replace with 'multi' OR Replace with 'mufti' OR Replace with 'muftis'"
                 ),
             ],
         ],
