@@ -58,6 +58,30 @@ This tool can be piggy bag`
             expect(problems.length).toEqual(1);
             expect(problems[0].message).toBe("Did you mean `piggyback`? Suggestions: Replace with 'piggyback'");
         });
+        test("replace strings", async () => {
+            config = {
+                type: "error",
+                option: [
+                    "",
+                    [],
+                    {},
+                    [
+                        ["\\n", " "],
+                        ["~", ""],
+                    ]
+                ],
+            };
+            const linter = new Linter();
+            const ast = linter.parseAst(
+                `Feature: steps can have special characters
+  Scenario: step with line break
+    When a step contains "a\\nline break"
+    And a step contains spec~ial characters`
+            );
+            const problems = await GrammarCheck.run(ast, config);
+
+            expect(problems.length).toEqual(0);
+        });
     });
 
     describe("invalid ast", () => {
