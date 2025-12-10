@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+-   Use [harper](https://github.com/Automattic/harper/) to check the grammar of the feature files
+
 ### Changed
 
 ### Fixed
