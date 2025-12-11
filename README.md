@@ -95,6 +95,25 @@ e.g.
   ]
 ```
 
+**words_to_avoid**
+1. level `string`
+2. strings to avoid `string[][]` where the inner array has two items, first being the string to avaoid and the second optionally a custom error message.
+
+e.g.
+```
+"words_to_avoid": [
+  "error",
+  [
+     ["click"],
+     ["clicks"],
+     ["clicked"],
+     ["see", "Describe the behavior of the app, not what the user sees."],
+     ["sees", "Describe the behavior of the app, not what the user sees."],
+     ["seen", "Describe the behavior of the app, not what the user sees."]
+  ]
+]
+```
+
 ## Code of Conduct
 
 GherLint adheres to this [Code of Conduct](CODE_OF_CONDUCT.md).
