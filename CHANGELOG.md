@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   New lint rule:
     - `then_should_have_should` - checks that every Then step contains a 'should' (https://github.com/gherlint/gherlint/pull/145)
 -   Use [harper](https://github.com/Automattic/harper/) to check the grammar of the feature files
+-   New lint rule that checks for unwanted words in steps
 
 ### Changed
 
