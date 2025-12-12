@@ -9,12 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   New lint rule:
-    - `then_should_have_should` - checks that every Then step contains a 'should' (https://github.com/gherlint/gherlint/pull/145)
--   Use [harper](https://github.com/Automattic/harper/) to check the grammar of the feature files
--   New lint rule that checks for unwanted words in steps
+### Changed
+
+### Fixed
+
+## [2.0.0-rc.1] - 2025-12-15
+
+### Added
+
+New lint rules:
+  - `require_when_and_then_step` - checks that every feature has a `When` and a `Then` step
+  - `then_should_have_should` - checks that every Then step contains a 'should' (https://github.com/gherlint/gherlint/pull/145)
+  - `grammar_check`- uses [harper](https://github.com/Automattic/harper/) to check the grammar of the feature files
+  - `words_to_avoid` - checks for unwanted words in steps
 
 ### Changed
+
+- [BREAKING] `Linter.lint()` and `Linter.runRules()` are now async
+- various dependency bumps
 
 ### Fixed
 
