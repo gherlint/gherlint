@@ -137,3 +137,34 @@ If you want to contribute by adding a new rule, please follow the [Adding New Ru
 ## License
 
 [MIT License](LICENSE)
+
+## Docker Support
+
+Gherlint can be run using Docker without installing dependencies locally.
+
+### Build Image
+
+```
+docker build -t gherlint .
+```
+
+### Lint Feature Files
+```
+docker run --rm \
+  -v /path/to/project:/project \
+  gherlint \
+  /project/features \
+  -c /project/.gherlintrc.json
+```
+
+### Fix Feature Files
+```
+docker run --rm \
+  -v /path/to/project:/project \
+  gherlint \
+  --fix \
+  /project/features \
+  -c /project/.gherlintrc.json
+  ```
+  
+The Docker container runs the Gherlint CLI, uses mounted project files as input, reports lint errors, and applies available fixes with --fix.
